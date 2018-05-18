@@ -57,10 +57,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
     
     func initShip() {
-        let shipScene = SCNScene(named: "art.scnassets/Drone.dae")
+        let shipScene = SCNScene(named: "art.scnassets/rocketbyt4k1t.dae")
         shipNode = shipScene?.rootNode
         shipNode.position = SCNVector3(x: 0, y: 0, z: 0)
-        shipNode.scale = SCNVector3(x: 15, y: 15, z: 15)
+        shipNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
+        shipNode.eulerAngles = SCNVector3(x: -(Float.pi/2), y: 0, z: 0)
         gameScene.rootNode.addChildNode(shipNode)
     }
     
