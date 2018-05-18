@@ -24,10 +24,10 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
-        <!--Game View Controller-->
+        <!--Asteroid Game View Controller-->
         <scene sceneID="V39-Cm-nQ2">
             <objects>
-                <viewController id="aCb-NO-5R2" customClass="GameViewController" customModule="RocketX" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="aCb-NO-5R2" customClass="AsteroidGameViewController" customModule="RocketX" customModuleProvider="target" sceneMemberID="viewController">
                     <sceneKitView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="oOT-hD-bia">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
