@@ -9,35 +9,56 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import CoreMotion
 
-class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate {
+// setting the collision mask
+enum CollisionMask: Int {
+    case ship = 1
+    case asteroid = 2
+}
+
+enum GameState: Int {
+    case playing
+    case dead
+    case paused
+}
+
+
+class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysicsContactDelegate {
 
     
     // MARK: Properties
-    var gameView: SCNView!
+    //var gameView: SCNView!
     var gameScene: SCNScene!
     var cameraNode: SCNNode!
     var shipNode: SCNNode!
     var asteroidCreationTiming: Double = 0
+    var gameState: GameState!
+    
+    @IBOutlet var gameView: SCNView!
     
     
+    
+    // MARK:
     override func viewDidLoad() {
         super.viewDidLoad()
-        initView()
+        initGameView()
         initScene()
         initCamera()
         initShip()
         //createAsteroid()
     }
     
+    
+    
+    
     // MARK: functions
     
-    func initView() {
-        gameView = self.view as! SCNView
+    func initGameView() {
+        //gameView = self.view as! SCNView
         gameView.allowsCameraControl = true
         gameView.autoenablesDefaultLighting = true
         gameView.delegate = self
-        
     }
     
     func initScene() {
@@ -46,6 +67,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate {
         gameView.scene?.physicsWorld.gravity = SCNVector3(x: 0, y: 0, z: 0)
         gameView.scene?.physicsWorld.speed = 1
         gameScene.background.contents = UIColor.darkGray
+        gameScene.physicsWorld.contactDelegate = self
         
     }
     
@@ -62,7 +84,18 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate {
         shipNode.position = SCNVector3(x: 0, y: 0, z: 0)
         shipNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
         shipNode.eulerAngles = SCNVector3(x: -(Float.pi/2), y: 0, z: 0)
+        // setting the physicsbody of the ship
+        shipNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        shipNode.physicsBody?.damping = 0.5
+        shipNode.physicsBody?.categoryBitMask = CollisionMask.ship.rawValue
+        shipNode.physicsBody?.contactTestBitMask = CollisionMask.asteroid.rawValue
+        shipNode.name = "ship"
         gameScene.rootNode.addChildNode(shipNode)
+        gameState = GameState.playing
+        //
+        
+        print(gameState)
+        
     }
     
     func createAsteroid() {
@@ -80,6 +113,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate {
         gameScene.rootNode.addChildNode(asteroidNode)
         
         asteroidNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        asteroidNode.physicsBody?.categoryBitMask = CollisionMask.asteroid.rawValue
         asteroidNode.physicsBody?.damping = 0
         //apllying forces and torques
         let asteroidInitialForce = SCNVector3(x: 0, y: 0, z: 10)
@@ -88,22 +122,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate {
         let randomAsteroidTorqueY = Float(drand48()-0.5)
         let randomAsteroidTorqueZ = Float(drand48()-0.5)
         asteroidNode.physicsBody?.applyTorque(SCNVector4(x: randomAsteroidTorqueX, y: randomAsteroidTorqueY, z: randomAsteroidTorqueZ, w: 5), asImpulse: true)
-        
-        
-        
     }
     
-    
-    
-    // MARK: SCNSceneRendererDeligate functions
-    
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        if time > asteroidCreationTiming {
-            createAsteroid()
-            asteroidCreationTiming = time + 4
-            cleanUp()
-        }
-    }
     
     // remove the unseeable asteroid behind the camera
     func cleanUp() {
@@ -117,8 +137,37 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate {
     
     
     
+    
+    
+    
+    
+    // MARK: SCNSceneRendererDeligate functions
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        if time > asteroidCreationTiming {
+            createAsteroid()
+            asteroidCreationTiming = time + 4
+            cleanUp()
+        }
+    }
+    
+    
+    // MARK: SCNPhysicsContactDelegate functions
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        gameScene.rootNode.childNode(withName: "ship", recursively: false)?.removeFromParentNode()
+        gameState = GameState.dead
+        print(gameState)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     override var shouldAutorotate: Bool {
-        return true
+        return false
     }
     
     override var prefersStatusBarHidden: Bool {

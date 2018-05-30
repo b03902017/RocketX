@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -28,10 +29,26 @@
         <scene sceneID="V39-Cm-nQ2">
             <objects>
                 <viewController id="aCb-NO-5R2" customClass="AsteroidGameViewController" customModule="RocketX" customModuleProvider="target" sceneMemberID="viewController">
-                    <sceneKitView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="oOT-hD-bia">
+                    <view key="view" contentMode="scaleToFill" id="f8x-FO-AcU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </sceneKitView>
+                        <subviews>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfa-3f-I1Q">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </sceneKitView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="HxM-Q3-f58" firstAttribute="trailing" secondItem="mfa-3f-I1Q" secondAttribute="trailing" id="5fe-xA-b9E"/>
+                            <constraint firstItem="mfa-3f-I1Q" firstAttribute="leading" secondItem="HxM-Q3-f58" secondAttribute="leading" id="dYb-t6-HB8"/>
+                            <constraint firstItem="mfa-3f-I1Q" firstAttribute="top" secondItem="HxM-Q3-f58" secondAttribute="top" id="jcB-Np-2pp"/>
+                            <constraint firstItem="HxM-Q3-f58" firstAttribute="bottom" secondItem="mfa-3f-I1Q" secondAttribute="bottom" id="xKm-R7-bbA"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="HxM-Q3-f58"/>
+                    </view>
+                    <connections>
+                        <outlet property="gameView" destination="mfa-3f-I1Q" id="p0o-WW-gck"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xrl-Lk-ACP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
