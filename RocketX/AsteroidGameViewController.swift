@@ -32,8 +32,14 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     var gameScene: SCNScene!
     var cameraNode: SCNNode!
     var shipNode: SCNNode!
+    
     var asteroidCreationTiming: Double = 0
     var gameState: GameState!
+    
+    var motionManager: CMMotionManager!
+    var devicePitchOffset: Double! = 0
+    
+    
     
     @IBOutlet var gameView: SCNView!
     
@@ -46,7 +52,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         initScene()
         initCamera()
         initShip()
-        //createAsteroid()
+        initMotionManager()
+        setDevicePitchOffset()
     }
     
     
@@ -56,7 +63,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initGameView() {
         //gameView = self.view as! SCNView
-        gameView.allowsCameraControl = true
+        gameView.allowsCameraControl = false
         gameView.autoenablesDefaultLighting = true
         gameView.delegate = self
     }
@@ -74,29 +81,38 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     func initCamera() {
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10   )
+        let cameraAngle: Float = 20
+        cameraNode.eulerAngles = SCNVector3(x: -.pi*cameraAngle/180, y: 0, z: 0)
+        cameraNode.position = SCNVector3(x: 0, y: tan(.pi*cameraAngle/180)*10, z: 10)
+        //cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         gameScene.rootNode.addChildNode(cameraNode)
     }
     
     func initShip() {
-        let shipScene = SCNScene(named: "art.scnassets/rocketbyt4k1t.dae")
+        let shipScene = SCNScene(named: "art.scnassets/retrorockett4k1t.dae")
         shipNode = shipScene?.rootNode
         shipNode.position = SCNVector3(x: 0, y: 0, z: 0)
         shipNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
         shipNode.eulerAngles = SCNVector3(x: -(Float.pi/2), y: 0, z: 0)
         // setting the physicsbody of the ship
         shipNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        shipNode.physicsBody?.damping = 0.5
+        shipNode.physicsBody?.damping = 0.3
         shipNode.physicsBody?.categoryBitMask = CollisionMask.ship.rawValue
         shipNode.physicsBody?.contactTestBitMask = CollisionMask.asteroid.rawValue
         shipNode.name = "ship"
         gameScene.rootNode.addChildNode(shipNode)
         gameState = GameState.playing
-        //
         
+        //for debugging below
         print(gameState)
-        
     }
+    
+    //init device motion sensing
+    func initMotionManager() {
+        motionManager = CMMotionManager()
+    }
+ 
+    
     
     func createAsteroid() {
         // create the SCNGeometry
@@ -134,7 +150,19 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
     }
     
-    
+    //calibrate devicemotion
+    func setDevicePitchOffset() {
+        while true {
+            motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical)
+            if motionManager.deviceMotion?.attitude.pitch == nil {
+                continue
+            } else {
+                devicePitchOffset = motionManager.deviceMotion?.attitude.pitch
+                break
+            }
+            
+        }
+    }
     
     
     
@@ -144,6 +172,19 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // MARK: SCNSceneRendererDeligate functions
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
+        //read device motion (attitude
+        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical)
+        //print(motionManager.deviceMotion?.attitude)
+        guard motionManager.deviceMotion?.attitude != nil else {return}
+        shipNode.physicsBody?.applyForce(SCNVector3(x: Float((motionManager.deviceMotion?.attitude.roll)!*3.0), y: Float(-(((motionManager.deviceMotion?.attitude.pitch)!)-devicePitchOffset)*3.0), z: 0), asImpulse: false)
+        
+        if(gameState == GameState.dead) {
+            gameState = GameState.playing
+            initShip()
+        }
+        
+        //creating asteroids and cleaning up asteroids
         if time > asteroidCreationTiming {
             createAsteroid()
             asteroidCreationTiming = time + 4
@@ -176,7 +217,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            return .portrait
         } else {
             return .all
         }
