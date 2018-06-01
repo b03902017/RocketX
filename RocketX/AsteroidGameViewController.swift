@@ -10,6 +10,7 @@ import UIKit
 import QuartzCore
 import SceneKit
 import CoreMotion
+import ARKit
 
 // setting the collision mask
 enum CollisionMask: Int {
@@ -42,6 +43,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     
     @IBOutlet var gameView: SCNView!
+    @IBOutlet weak var arView: ARSCNView!
     
     
     
@@ -99,7 +101,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         shipNode.physicsBody?.damping = 0.3
         shipNode.physicsBody?.categoryBitMask = CollisionMask.ship.rawValue
         shipNode.physicsBody?.contactTestBitMask = CollisionMask.asteroid.rawValue
-        shipNode.name = "ship"
+        shipNode.name = "rocket"
         gameScene.rootNode.addChildNode(shipNode)
         gameState = GameState.playing
         
@@ -164,12 +166,43 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Create a session configuration
+        guard ARFaceTrackingConfiguration.isSupported else { return }
+        
+        let configuration = ARFaceTrackingConfiguration()
+        
+        configuration.isLightEstimationEnabled = true
+        configuration.worldAlignment = .camera
+        
+        // Run the view's session
+        arView.session.run(configuration)
+        
+        
+        self.arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+    }
     
-    
-    
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause the view's session
+        arView.session.pause()
+    }
     
     // MARK: SCNSceneRendererDeligate functions
+    
+    func renderer(_ renderer: SCNSceneRenderer, willUpdate node: SCNNode, for anchor: ARAnchor) {
+            //Apply input from face camera to rocket
+        gameView.scene?.rootNode.childNode(withName: "rocket", recursively: true)?.transform = node.transform
+
+        //Some code that Junning might want to see, just for future reference
+//        gameScene.rootNode.childNode(withName: "cube", recursively: true)?.transform = (gameView.pointOfView?.transform)!
+//        gameScene.rootNode.childNode(withName: "cube", recursively: true)?.position = SCNVector3(x: 0, y: 0, z: 0)
+//
+    }
+    
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         
@@ -199,8 +232,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameState = GameState.dead
         print(gameState)
     }
-    
-    
     
     
     
