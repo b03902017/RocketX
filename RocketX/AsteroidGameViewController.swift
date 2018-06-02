@@ -28,7 +28,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
 
     
     // MARK: Properties
-    //var gameView: SCNView!
+    
+    // object of other classes
+    var objMotionControl = MotionControl()
+    
     var gameScene: SCNScene!
     var cameraNode: SCNNode!
     var shipNode: SCNNode!
@@ -36,8 +39,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     var asteroidCreationTiming: Double = 0
     var gameState: GameState!
     
-    var motionManager: CMMotionManager!
-    var devicePitchOffset: Double! = 0
+    
     
     
     
@@ -47,13 +49,17 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     // MARK:
     override func viewDidLoad() {
+        
+        
+        
         super.viewDidLoad()
         initGameView()
         initScene()
         initCamera()
         initShip()
-        initMotionManager()
-        setDevicePitchOffset()
+        
+        objMotionControl.setDevicePitchOffset()
+        
     }
     
     
@@ -96,7 +102,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         shipNode.eulerAngles = SCNVector3(x: -(Float.pi/2), y: 0, z: 0)
         // setting the physicsbody of the ship
         shipNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        shipNode.physicsBody?.damping = 0.3
+        shipNode.physicsBody?.damping = 0.2
         shipNode.physicsBody?.categoryBitMask = CollisionMask.ship.rawValue
         shipNode.physicsBody?.contactTestBitMask = CollisionMask.asteroid.rawValue
         shipNode.name = "ship"
@@ -106,12 +112,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         //for debugging below
         print(gameState)
     }
-    
-    //init device motion sensing
-    func initMotionManager() {
-        motionManager = CMMotionManager()
-    }
- 
     
     
     func createAsteroid() {
@@ -150,19 +150,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
     }
     
-    //calibrate devicemotion
-    func setDevicePitchOffset() {
-        while true {
-            motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical)
-            if motionManager.deviceMotion?.attitude.pitch == nil {
-                continue
-            } else {
-                devicePitchOffset = motionManager.deviceMotion?.attitude.pitch
-                break
-            }
-            
-        }
-    }
+    
+    
     
     
     
@@ -173,12 +162,16 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         
-        //read device motion (attitude
-        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical)
-        //print(motionManager.deviceMotion?.attitude)
-        guard motionManager.deviceMotion?.attitude != nil else {return}
-        shipNode.physicsBody?.applyForce(SCNVector3(x: Float((motionManager.deviceMotion?.attitude.roll)!*3.0), y: Float(-(((motionManager.deviceMotion?.attitude.pitch)!)-devicePitchOffset)*3.0), z: 0), asImpulse: false)
+        //
+        devicePitchOffset = objMotionControl.devicePitchOffset
         
+        //read device motion (attitude)
+        objMotionControl.updateDeviceMotionData()
+        
+        //set control of the ship
+        shipNode.physicsBody?.applyForce(SCNVector3(x: Float(objMotionControl.roll*3.0), y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*3.0), z: 0), asImpulse: false)
+
+
         if(gameState == GameState.dead) {
             gameState = GameState.playing
             initShip()
