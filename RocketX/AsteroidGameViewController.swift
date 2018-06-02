@@ -186,6 +186,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         var horizontalCentralForce: Float = 0
         var verticalCentralForce: Float = 0
+        
+        //edge assist
         if shipNode.presentation.position.x > (horizontalBound - edgeWidth) && (shipNode.physicsBody?.velocity.x)! > Float(0) {
             horizontalCentralForce = (shipNode.presentation.position.x - (horizontalBound - edgeWidth)) / edgeWidth * -3
         }
@@ -204,7 +206,20 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             verticalCentralForce = 0
         }
         
-        let shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
+        
+        
+        var shipControlForce = SCNVector3(x: 0, y: 0, z: 0)
+        
+        // should see if the device is an iPhone X or not
+        if UIDevice.modelName == "iPhone X"{
+            //face control
+            // replace the objMotionControl components (objMotionControl.roll and objMotionControl.pitch) with face orientation in degree, and remove the "objMotionControl.devicePitchOffset"
+            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
+        }
+        else {
+            //device motion control
+            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
+        }
         
         shipNode.physicsBody?.applyForce(shipControlForce, asImpulse: false)
 

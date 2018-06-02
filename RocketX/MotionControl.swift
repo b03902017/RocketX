@@ -43,6 +43,7 @@ public class MotionControl {
         roll = (motionManager.deviceMotion?.attitude.roll)!
         pitch = (motionManager.deviceMotion?.attitude.pitch)!
         yaw = (motionManager.deviceMotion?.attitude.yaw)!
+        //print(motionManager.deviceMotion?.attitude) // in degree
     }
     
     
