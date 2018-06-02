@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4AD3492620C23ACD00CB88CE /* MotionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD3492520C23ACD00CB88CE /* MotionControl.swift */; };
 		4AF7259920AC91A000F62E5C /* AsteroidGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */; };
 		872E0D3720C18E1C00C2162D /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872E0D3620C18E1C00C2162D /* EntryViewController.swift */; };
 		872E0D3B20C1C7DD00C2162D /* ScoreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872E0D3A20C1C7DD00C2162D /* ScoreTableViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4AD3492520C23ACD00CB88CE /* MotionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionControl.swift; sourceTree = "<group>"; };
 		4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsteroidGameViewController.swift; sourceTree = "<group>"; };
 		872E0D3620C18E1C00C2162D /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		872E0D3A20C1C7DD00C2162D /* ScoreTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTableViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				87DA42FF20ABD27B00E6C438 /* AppDelegate.swift */,
 				87DA430120ABD27B00E6C438 /* art.scnassets */,
 				87DA430320ABD27B00E6C438 /* ViewController.swift */,
+				4AD3492520C23ACD00CB88CE /* MotionControl.swift */,
 				4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */,
 				87DA430520ABD27B00E6C438 /* Main.storyboard */,
 				87DA430820ABD27D00E6C438 /* Assets.xcassets */,
