@@ -244,7 +244,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         var shipControlForce = SCNVector3(x: 0, y: 0, z: 0)
         
         // should see if the device is an iPhone X or not
-        if UIDevice.modelName == "iPhone X"{
+        if UIDevice.current.model == "iPhone X"{
             //face control
             // replace the objMotionControl components (objMotionControl.roll and objMotionControl.pitch) with face orientation in degree, and remove the "objMotionControl.devicePitchOffset"
             shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)

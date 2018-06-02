@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4AA10ACA20C27FED00E1EE77 /* ModelIdentifiying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA10AC920C27FED00E1EE77 /* ModelIdentifiying.swift */; };
-		4AD3492620C23ACD00CB88CE /* MotionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD3492520C23ACD00CB88CE /* MotionControl.swift */; };
 		4AF7259920AC91A000F62E5C /* AsteroidGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */; };
+		870FDB3B20C2C670006665BA /* MotionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD3492520C23ACD00CB88CE /* MotionControl.swift */; };
 		872E0D3720C18E1C00C2162D /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872E0D3620C18E1C00C2162D /* EntryViewController.swift */; };
 		872E0D3B20C1C7DD00C2162D /* ScoreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872E0D3A20C1C7DD00C2162D /* ScoreTableViewController.swift */; };
 		87DA430020ABD27B00E6C438 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DA42FF20ABD27B00E6C438 /* AppDelegate.swift */; };
@@ -160,6 +160,7 @@
 				4AF7259920AC91A000F62E5C /* AsteroidGameViewController.swift in Sources */,
 				872E0D3B20C1C7DD00C2162D /* ScoreTableViewController.swift in Sources */,
 				87DA430020ABD27B00E6C438 /* AppDelegate.swift in Sources */,
+				870FDB3B20C2C670006665BA /* MotionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
