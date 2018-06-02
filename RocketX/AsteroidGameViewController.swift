@@ -247,20 +247,26 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         if UIDevice.current.model == "iPhone X"{
             //face control
             // replace the objMotionControl components (objMotionControl.roll and objMotionControl.pitch) with face orientation in degree, and remove the "objMotionControl.devicePitchOffset"
-            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
+            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
         }
         else {
             //device motion control
-            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
+            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
         }
         
-        shipNode.physicsBody?.applyForce(shipControlForce, asImpulse: false)
+//        shipNode.physicsBody?.applyForce(shipControlForce, asImpulse: false)
+        shipNode.physicsBody?.applyForce(shipControlForce, at: SCNVector3(x: 0, y: 0, z: -0.5), asImpulse: false)
+        let shipOrientation = shipNode.presentation.convertVector(SCNVector3(x: 0, y: -1, z: 0), to: nil)
+        let shipStablingTorque = SCNVector4(x: shipOrientation.y, y: -shipOrientation.x, z: 0, w: 50)
+        shipNode.physicsBody?.applyTorque(shipStablingTorque, asImpulse: false)
+        print(shipNode.presentation.position)
 
 
         //now i just reset the ship after the ship died, should be removed after the interface is set
         if(gameState == GameState.dead) {
-            gameState = GameState.playing
+            shipNode.removeFromParentNode()
             initShip()
+            gameState = GameState.playing
         }
         
         //dead if ship is too far away
