@@ -38,12 +38,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     var shipNode: SCNNode!
     var springNode: SCNNode!
     
-    var asteroidCreationTiming: Double = 0
+    var startAsteroidCreation: Bool = false
+    var asteroidCreationTiming: Double = 4
     var gameState: GameState = GameState.paused
     
-    let horizontalBound: Float = 4 //was 7
-    let upperBound: Float = 6 //was 8
-    let lowerBound: Float = -6
+    let horizontalBound: Float = 6 //was 7
+    let upperBound: Float = 8 //was 8
+    let lowerBound: Float = -8
     let edgeWidth: Float = 3
     
     
@@ -113,6 +114,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         // setting the physicsbody of the ship
         shipNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         shipNode.physicsBody?.damping = 0.05
+        shipNode.physicsBody?.angularDamping = 0.9
         shipNode.physicsBody?.categoryBitMask = CollisionMask.ship.rawValue
         shipNode.physicsBody?.contactTestBitMask = CollisionMask.asteroid.rawValue
         shipNode.name = "rocket"
@@ -180,6 +182,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         // Run the view's session
         arView.session.run(configuration)
+        gameScene.isPaused = false
         
         
         self.arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
@@ -190,6 +193,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         // Pause the view's session
         arView.session.pause()
+        gameScene.isPaused = true
     }
     
     // MARK: SCNSceneRendererDeligate functions
@@ -222,19 +226,19 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         //edge assist
         if shipNode.presentation.position.x > (horizontalBound - edgeWidth) && (shipNode.physicsBody?.velocity.x)! > Float(0) {
-            horizontalCentralForce = (shipNode.presentation.position.x - (horizontalBound - edgeWidth)) / edgeWidth * -3
+            horizontalCentralForce = (shipNode.presentation.position.x - (horizontalBound - edgeWidth)) / edgeWidth * -6
         }
         else if shipNode.presentation.position.x < (-horizontalBound + edgeWidth) && (shipNode.physicsBody?.velocity.x)! < Float(0)  {
-            horizontalCentralForce = (shipNode.presentation.position.x - (-horizontalBound + edgeWidth)) / edgeWidth * -3
+            horizontalCentralForce = (shipNode.presentation.position.x - (-horizontalBound + edgeWidth)) / edgeWidth * -6
         }
         else {
             horizontalCentralForce = 0
         }
         if shipNode.presentation.position.y > (upperBound - edgeWidth) && (shipNode.physicsBody?.velocity.y)! > Float(0) {
-            verticalCentralForce = (shipNode.presentation.position.y - (upperBound - edgeWidth)) / edgeWidth * -5
+            verticalCentralForce = (shipNode.presentation.position.y - (upperBound - edgeWidth)) / edgeWidth * -10
         }
         else if shipNode.presentation.position.y < (lowerBound + edgeWidth) && (shipNode.physicsBody?.velocity.y)! < Float(0) {
-            verticalCentralForce = (shipNode.presentation.position.y - (lowerBound + edgeWidth)) / edgeWidth * -5
+            verticalCentralForce = (shipNode.presentation.position.y - (lowerBound + edgeWidth)) / edgeWidth * -10
         } else {
             verticalCentralForce = 0
         }
@@ -255,16 +259,21 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
         
 //        shipNode.physicsBody?.applyForce(shipControlForce, asImpulse: false)
-        shipNode.physicsBody?.applyForce(shipControlForce, at: SCNVector3(x: 0, y: 0, z: -0.5), asImpulse: false)
-        let shipOrientation = shipNode.presentation.convertVector(SCNVector3(x: 0, y: -1, z: 0), to: nil)
-        let shipStablingTorque = SCNVector4(x: shipOrientation.y, y: -shipOrientation.x, z: 0, w: 50)
-        shipNode.physicsBody?.applyTorque(shipStablingTorque, asImpulse: false)
-        print(shipNode.presentation.position)
+       
+        shipNode.physicsBody?.applyForce(shipControlForce, at: SCNVector3(x: 0, y: 0, z: -1.5), asImpulse: false)
+        let shipBow = shipNode.presentation.convertVector(SCNVector3(x: 0, y: 5, z: 0), to: nil)
+        let shipStern = shipNode.presentation.convertVector(SCNVector3(x: 0, y: -5, z: 0), to: nil)
+        shipNode.physicsBody?.applyForce(SCNVector3(x: 0, y: 0, z: -18), at: shipBow, asImpulse: false)
+        shipNode.physicsBody?.applyForce(SCNVector3(x: 0, y: 0, z: 18), at: shipStern, asImpulse: false)
+//        print(shipNode.presentation.rotation)
 
 
-        //now i just reset the ship after the ship died, should be removed after the interface is set
+        //reset the ship after the ship died, should be removed after the interface is set
         if(gameState == GameState.dead) {
-            shipNode.removeFromParentNode()
+            for node in gameScene.rootNode.childNodes {
+                node.removeFromParentNode()
+                startAsteroidCreation = false
+            }
             initShip()
             gameState = GameState.playing
         }
@@ -272,7 +281,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         //dead if ship is too far away
         
         if abs(shipNode.presentation.position.x) > horizontalBound || shipNode.presentation.position.y > upperBound || shipNode.presentation.position.y < lowerBound {
-            shipNode.removeFromParentNode()
             gameState = .dead
         }
     
@@ -280,9 +288,14 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         //creating asteroids and cleaning up asteroids
         if time > asteroidCreationTiming {
-            createAsteroid()
-            asteroidCreationTiming = time + 4
-            cleanUp()
+            if startAsteroidCreation == true {
+                createAsteroid()
+                asteroidCreationTiming = time + 4
+                cleanUp()
+            } else {
+                asteroidCreationTiming = time + 3
+                startAsteroidCreation = true
+            }
         }
     }
     
@@ -291,7 +304,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     // MARK: SCNPhysicsContactDelegate Functions
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        gameScene.rootNode.childNode(withName: "ship", recursively: false)?.removeFromParentNode()
+//        gameScene.rootNode.childNode(withName: "ship", recursively: false)?.removeFromParentNode()
         gameState = GameState.dead
         print(gameState)
     }
