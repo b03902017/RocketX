@@ -10,7 +10,6 @@
 		4AF7259920AC91A000F62E5C /* AsteroidGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */; };
 		87DA430020ABD27B00E6C438 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DA42FF20ABD27B00E6C438 /* AppDelegate.swift */; };
 		87DA430220ABD27B00E6C438 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 87DA430120ABD27B00E6C438 /* art.scnassets */; };
-		87DA430420ABD27B00E6C438 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DA430320ABD27B00E6C438 /* ViewController.swift */; };
 		87DA430720ABD27B00E6C438 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87DA430520ABD27B00E6C438 /* Main.storyboard */; };
 		87DA430920ABD27D00E6C438 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87DA430820ABD27D00E6C438 /* Assets.xcassets */; };
 		87DA430C20ABD27D00E6C438 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87DA430A20ABD27D00E6C438 /* LaunchScreen.storyboard */; };
@@ -21,7 +20,6 @@
 		87DA42FC20ABD27B00E6C438 /* RocketX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RocketX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87DA42FF20ABD27B00E6C438 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		87DA430120ABD27B00E6C438 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		87DA430320ABD27B00E6C438 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		87DA430620ABD27B00E6C438 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		87DA430820ABD27D00E6C438 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		87DA430B20ABD27D00E6C438 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -60,7 +58,6 @@
 			children = (
 				87DA42FF20ABD27B00E6C438 /* AppDelegate.swift */,
 				87DA430120ABD27B00E6C438 /* art.scnassets */,
-				87DA430320ABD27B00E6C438 /* ViewController.swift */,
 				4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */,
 				87DA430520ABD27B00E6C438 /* Main.storyboard */,
 				87DA430820ABD27D00E6C438 /* Assets.xcassets */,
@@ -142,7 +139,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87DA430420ABD27B00E6C438 /* ViewController.swift in Sources */,
 				4AF7259920AC91A000F62E5C /* AsteroidGameViewController.swift in Sources */,
 				87DA430020ABD27B00E6C438 /* AppDelegate.swift in Sources */,
 			);
@@ -289,13 +285,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q7K7WAPADP;
+				DEVELOPMENT_TEAM = CYWB736CNQ;
 				INFOPLIST_FILE = RocketX/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP.RocketX;
+				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP2018.RocketX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -307,13 +304,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Q7K7WAPADP;
+				DEVELOPMENT_TEAM = CYWB736CNQ;
 				INFOPLIST_FILE = RocketX/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP.RocketX;
+				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP2018.RocketX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
