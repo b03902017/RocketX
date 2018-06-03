@@ -25,18 +25,20 @@ enum GameState: Int {
 }
 
 
-class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysicsContactDelegate {
+class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysicsContactDelegate, ARSCNViewDelegate {
 
     
     // MARK: Properties
     
     // object of other classes
     var objMotionControl = MotionControl()
+    var isIphoneX: Bool = false
     
     var gameScene: SCNScene!
     var cameraNode: SCNNode!
     var shipNode: SCNNode!
     var springNode: SCNNode!
+    var faceNode: SCNNode!
     
     var asteroidCreationTiming: Double = 0
     var gameState: GameState = GameState.paused
@@ -56,13 +58,18 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // MARK:
     override func viewDidLoad() {
         
-        
-        
         super.viewDidLoad()
         initGameView()
+        initARView()
         initScene()
         initCamera()
         initShip()
+        
+        if UIDevice.modelName == "iPhone X" {
+            isIphoneX = true
+        }else {
+            return
+        }
         
         gameState = .playing
         
@@ -80,6 +87,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameView.allowsCameraControl = false
         gameView.autoenablesDefaultLighting = true
         gameView.delegate = self
+    }
+    
+    func initARView() {
+        arView.delegate = self
     }
     
     func initScene() {
@@ -164,6 +175,12 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
     }
     
+    // MARK: SCNPhysicsContactDelegate Functions
+    //Function that handles collision between rocket and asteroids
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        gameState = GameState.dead
+        print(gameState)
+    }
     
     
     
@@ -181,7 +198,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         // Run the view's session
         arView.session.run(configuration)
         
-        
         self.arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
     }
     
@@ -195,28 +211,17 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // MARK: SCNSceneRendererDeligate functions
     
     func renderer(_ renderer: SCNSceneRenderer, willUpdate node: SCNNode, for anchor: ARAnchor) {
-            //Apply input from face camera to rocket
-        gameView.scene?.rootNode.childNode(withName: "rocket", recursively: true)?.transform = node.transform
+        //Get input from face for rocket
+        faceNode = node
+        //gameView.scene?.rootNode.childNode(withName: "rocket", recursively: true)?.transform = node.transform
 
-        //Some code that Junning might want to see, just for future reference
-//        gameScene.rootNode.childNode(withName: "cube", recursively: true)?.transform = (gameView.pointOfView?.transform)!
-//        gameScene.rootNode.childNode(withName: "cube", recursively: true)?.position = SCNVector3(x: 0, y: 0, z: 0)
-//
     }
     
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        
-        
-        
         // following part are controls for the ship, need to able to switch between iphoneX and others
         
-        //read device motion (attitude)
-        objMotionControl.updateDeviceMotionData()
-        
         //set control of the ship
-        
-        
         var horizontalCentralForce: Float = 0
         var verticalCentralForce: Float = 0
         
@@ -240,29 +245,44 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
         
         
-        
+        //Calculate the force that currently should affect the rocket
         var shipControlForce = SCNVector3(x: 0, y: 0, z: 0)
         
+        print("the facenode is \(faceNode)")
+
+        
         // should see if the device is an iPhone X or not
-        if UIDevice.current.model == "iPhone X"{
+        if isIphoneX == true {
             //face control
-            // replace the objMotionControl components (objMotionControl.roll and objMotionControl.pitch) with face orientation in degree, and remove the "objMotionControl.devicePitchOffset"
-            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
-        }
-        else {
+            if faceNode != nil {shipControlForce = SCNVector3(
+                //eulerAngles contains three elements: pitch, yaw and roll, in radians
+                x: Float(faceNode.eulerAngles.y/(.pi)*180*6.0) + horizontalCentralForce,
+                y: Float(faceNode.eulerAngles.x/(.pi)*180*10.0) + verticalCentralForce,
+                z: 0)
+            } else {
+            shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
+            }
+        }else {
+            //read device motion (attitude)
+            objMotionControl.updateDeviceMotionData()
             //device motion control
-            shipControlForce = SCNVector3(x: Float(objMotionControl.roll*6.0) + horizontalCentralForce, y: Float(((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce, z: 0)
+            shipControlForce = SCNVector3(
+                x: Float(objMotionControl.roll*6.0) + horizontalCentralForce,
+                y: Float(((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce,
+                z: 0)
         }
         
+        //Apply the force to the rocket itself
 //        shipNode.physicsBody?.applyForce(shipControlForce, asImpulse: false)
         shipNode.physicsBody?.applyForce(shipControlForce, at: SCNVector3(x: 0, y: 0, z: -0.5), asImpulse: false)
         let shipOrientation = shipNode.presentation.convertVector(SCNVector3(x: 0, y: -1, z: 0), to: nil)
         let shipStablingTorque = SCNVector4(x: shipOrientation.y, y: -shipOrientation.x, z: 0, w: 50)
         shipNode.physicsBody?.applyTorque(shipStablingTorque, asImpulse: false)
-        print(shipNode.presentation.position)
+        //print(shipNode.presentation.position)
 
 
-        //now i just reset the ship after the ship died, should be removed after the interface is set
+        
+        //DEATH FUNCTION, decides what happens when lose condition is met
         if(gameState == GameState.dead) {
             shipNode.removeFromParentNode()
             initShip()
@@ -270,14 +290,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
         
         //dead if ship is too far away
-        
         if abs(shipNode.presentation.position.x) > horizontalBound || shipNode.presentation.position.y > upperBound || shipNode.presentation.position.y < lowerBound {
-            shipNode.removeFromParentNode()
             gameState = .dead
         }
     
-        
-        
         //creating asteroids and cleaning up asteroids
         if time > asteroidCreationTiming {
             createAsteroid()
@@ -289,12 +305,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     
     
-    // MARK: SCNPhysicsContactDelegate Functions
-    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        gameScene.rootNode.childNode(withName: "ship", recursively: false)?.removeFromParentNode()
-        gameState = GameState.dead
-        print(gameState)
-    }
     
     
     
