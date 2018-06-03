@@ -32,6 +32,7 @@ public class MotionControl {
             // set the offset to current pitch
             guard motionManager.deviceMotion?.attitude.pitch != nil else {continue}
             devicePitchOffset = motionManager.deviceMotion!.attitude.pitch
+            print(devicePitchOffset)
             break
         }
     }

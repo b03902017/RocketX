@@ -68,9 +68,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         if UIDevice.modelName == "iPhone X" {
             isIphoneX = true
-        }else {
-            return
         }
+//        else {
+//            return
+//        }
         
         gameState = .playing
         
@@ -252,7 +253,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         //Calculate the force that currently should affect the rocket
         var shipControlForce = SCNVector3(x: 0, y: 0, z: 0)
         
-        print("the facenode is \(faceNode)")
+//        print("the facenode is \(faceNode)")
 
         
         // should see if the device is an iPhone X or not
@@ -274,6 +275,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 x: Float(objMotionControl.roll*6.0) + horizontalCentralForce,
                 y: Float(((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce,
                 z: 0)
+//            print(objMotionControl.devicePitchOffset)
         }
         
         //Apply the force to the rocket itself
@@ -318,12 +320,12 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     
     
-    // MARK: SCNPhysicsContactDelegate Functions
-    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-//        gameScene.rootNode.childNode(withName: "ship", recursively: false)?.removeFromParentNode()
-        gameState = GameState.dead
-        print(gameState)
-    }
+//    // MARK: SCNPhysicsContactDelegate Functions
+//    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+////        gameScene.rootNode.childNode(withName: "ship", recursively: false)?.removeFromParentNode()
+//        gameState = GameState.dead
+//        print(gameState)
+//    }
     
     
     
