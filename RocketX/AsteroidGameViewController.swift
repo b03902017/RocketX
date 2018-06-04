@@ -342,6 +342,31 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameScene.rootNode.runAction(SCNAction.repeatForever(SCNAction.sequence([delay, addScore])))
     }
     
+    func flashAnimate() {
+        // simple animate after collision
+        let circleRadius = gameView.bounds.width * 0.05 / 2.0
+        let flashView = UIView(frame: CGRect(x: 0, y: 0, width: circleRadius * 2, height: circleRadius * 2))
+        flashView.backgroundColor = UIColor.white
+        flashView.alpha = 1
+        flashView.layer.cornerRadius = circleRadius
+        let positionOnScreen = gameView.projectPoint(shipNode.presentation.position)
+        flashView.center = CGPoint(x: Double(positionOnScreen.x), y: Double(positionOnScreen.y))
+        gameView.addSubview(flashView)
+        UIView.animate(withDuration: 0.3, animations: {
+            flashView.alpha = 0.8
+            flashView.transform = CGAffineTransform(scaleX: 50.0, y: 50.0)
+            flashView.center = CGPoint(x: Double(positionOnScreen.x), y: Double(positionOnScreen.y))
+        }, completion: { (complete: Bool) in
+            UIView.animate(withDuration: 0.2, animations: {
+                flashView.alpha = 0
+                flashView.transform = CGAffineTransform(scaleX: 1/50.0, y: 1/50.0)
+                flashView.center = CGPoint(x: Double(positionOnScreen.x), y: Double(positionOnScreen.y))
+            }, completion: { (complete: Bool) in
+                flashView.removeFromSuperview()
+            })
+        })
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == GameState.playing {
             gameState = GameState.paused
@@ -455,6 +480,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // Function that handles collision between rocket and asteroids
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         if gameState == GameState.playing {
+            flashAnimate()
             gameState = GameState.dead
             print("collision")
         }
