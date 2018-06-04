@@ -49,6 +49,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     let lowerBound: Float = -8
     let edgeWidth: Float = 3
     
+    //Input thresholds and ceilings (change values below, ceilings are chosen in degrees of rotation)
+    var inputThresh: Float = 0
+    var yPosCeil: Float = 0
+    var yNegCeil: Float = 0
+    var xPosCeil: Float = 0
+    var xNegCeil: Float = 0
+    
     
     
     @IBOutlet var gameView: SCNView!
@@ -68,10 +75,19 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         if UIDevice.modelName == "iPhone X" {
             isIphoneX = true
+            inputThresh = 0.2 // Normalized value
+            yPosCeil = .pi/180 * 45 // Radians
+            yNegCeil = .pi/180 * 45
+            xPosCeil = .pi/180 * 45
+            xNegCeil = .pi/180 * 45
         }
-//        else {
-//            return
-//        }
+        else {
+            inputThresh = 0.3 // Normalized value
+            yPosCeil = .pi/180 * 60 // Radians
+            yNegCeil = .pi/180 * 60
+            xPosCeil = .pi/180 * 60
+            xNegCeil = .pi/180 * 60
+        }
         
         gameState = .playing
         
@@ -213,6 +229,37 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameScene.isPaused = true
     }
     
+    //Input standardizer: This function takes the pitch (y) and yaw (x), applies threshold and ceiling, and normalizes it.
+    func inputNormalizer (pitch: Float, yaw: Float) -> (pitchNorm: Float, yawNorm: Float) {
+        var tempPitch = pitch
+        var tempYaw = yaw
+        //Apply the ceiling
+        if pitch > yPosCeil { tempPitch = yPosCeil
+        } else if pitch < yNegCeil { tempPitch = yNegCeil
+        } else { tempPitch = pitch
+        }
+        if yaw > xPosCeil { tempYaw = xPosCeil
+        } else if yaw < xNegCeil { tempYaw = xNegCeil
+        } else { tempYaw = yaw
+        }
+        //Convert to range 0 to 1
+        let yOldRange:Float = ( yPosCeil - yNegCeil)
+        let yNewRange:Float = (1 - -1)
+        tempPitch = (((tempPitch - yNegCeil) * yNewRange) / yOldRange) + -1
+        let xOldRange:Float = ( xPosCeil - xNegCeil)
+        let xNewRange:Float = (1 - -1)
+        tempYaw = (((tempYaw - xNegCeil) * xNewRange) / xOldRange) + -1
+        //Apply threshold
+        if abs(tempPitch) < inputThresh {
+            tempPitch = 0
+        }
+        if abs(tempYaw) < inputThresh {
+            tempYaw = 0
+        }
+        
+        return (tempPitch, tempYaw)
+    }
+    
     // MARK: SCNSceneRendererDeligate functions
     
     func renderer(_ renderer: SCNSceneRenderer, willUpdate node: SCNNode, for anchor: ARAnchor) {
@@ -259,10 +306,12 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         // should see if the device is an iPhone X or not
         if isIphoneX == true {
             //face control
-            if faceNode != nil {shipControlForce = SCNVector3(
+            if faceNode != nil {
+                let (yTemp, xTemp) = inputNormalizer(pitch: faceNode.eulerAngles.y, yaw: faceNode.eulerAngles.x)
+                shipControlForce = SCNVector3(
                 //eulerAngles contains three elements: pitch, yaw and roll, in radians
-                x: Float(faceNode.eulerAngles.y/(.pi)*180*6.0) + horizontalCentralForce,
-                y: Float(faceNode.eulerAngles.x/(.pi)*180*10.0) + verticalCentralForce,
+                x: Float(yTemp*60) + horizontalCentralForce,
+                y: Float(xTemp*100) + verticalCentralForce,
                 z: 0)
             } else {
             shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
