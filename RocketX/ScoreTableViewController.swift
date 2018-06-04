@@ -15,7 +15,7 @@ class ScoreTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.layer.sublayerTransform = CATransform3DMakeTranslation(10, 5, 0);
+        self.view.layer.sublayerTransform = CATransform3DMakeTranslation(30, 5, 0);
         self.tableView.rowHeight = 44.0
     }
 
@@ -41,12 +41,12 @@ class ScoreTableViewController: UITableViewController {
         
         // Configure the cell...
         let cell = tableView.dequeueReusableCell(withIdentifier: "ScoreCell", for: indexPath)
-        cell.textLabel!.font = UIFont.monospacedDigitSystemFont(ofSize: cell.textLabel!.font.pointSize, weight: .regular)
+        cell.textLabel!.font = UIFont(name: "Menlo", size: cell.textLabel!.font.pointSize)
         
         if indexPath.row == 0 {
-            cell.textLabel!.text = "Rank : Score"
+            cell.textLabel!.text = "Rank\t\t\t\t\t\tScore"
         } else if indexPath.row <= scores.count {
-            cell.textLabel!.text = String(format: " %02d    :  %d", indexPath.row, scores[indexPath.row-1])
+            cell.textLabel!.text = String(format: " %02d \t\t\t\t\t\t %d", indexPath.row, scores[indexPath.row-1])
         } else {
             cell.textLabel!.text = ""
         }

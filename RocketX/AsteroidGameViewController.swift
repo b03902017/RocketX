@@ -63,6 +63,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // used for returning to game
     var lastShipVelocity: SCNVector3!
     var lastShipAngularVelocity: SCNVector4!
+    //Input thresholds and ceilings (change values below, ceilings are chosen in degrees of rotation)
+    var inputThresh: Float = 0
+    var yPosCeil: Float = 0
+    var yNegCeil: Float = 0
+    var xPosCeil: Float = 0
+    var xNegCeil: Float = 0
+    
     
     var gameState: GameState = GameState.paused
     
@@ -197,14 +204,15 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initPauseView() {
         // the background rectangle
-//        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
-//        pauseView.layer.cornerRadius = pauseView.frame.width/4.0
-        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width, height: gameView.bounds.height))
+        // pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
+        // pauseView.layer.cornerRadius = pauseView.frame.width/4.0
+        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*2, height: gameView.bounds.height*2))
         pauseView.backgroundColor = UIColor.black
         // If want to change the background color:
         // pauseView.backgroundColor = UIColor(red: 0/255, green: 30/255, blue: 80/255, alpha: 0.8)
         
         pauseView.clipsToBounds = true
+        // still not on the real center, don't know why
         pauseView.center = CGPoint(x: gameView.bounds.midX, y: gameView.bounds.midY)
         pauseView.alpha = 0
         gameView.addSubview(pauseView)
@@ -262,12 +270,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initGameOverView() {
         // the background rectangle
-//        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
-//        gameOverView.layer.cornerRadius = gameOverView.frame.width/4.0
+        // gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
+        // gameOverView.layer.cornerRadius = gameOverView.frame.width/4.0
         // overlay the whole gameView
-        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width, height: gameView.bounds.height))
+        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*2, height: gameView.bounds.height*2))
         gameOverView.backgroundColor = UIColor.black
         gameOverView.clipsToBounds = true
+        // still not on the real center, don't know why
         gameOverView.center = CGPoint(x: gameView.bounds.midX, y: gameView.bounds.midY)
         gameOverView.alpha = 0
         gameView.addSubview(gameOverView)
@@ -427,9 +436,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
         
         var scoreArray = UserDefaults.standard.object(forKey: "scoreArray") as? [Int] ?? [Int]()
-        scoreArray.sort{ $0 > $1 }
+        
         if scoreArray.count < 20 { scoreArray.append(score) }
-        else if scoreArray.last! < score { scoreArray[scoreArray.endIndex-1] = score }
+        else if (scoreArray.min()!) < score {
+            scoreArray.append(score)
+            scoreArray.sort{ $0 > $1 }
+            scoreArray.removeLast()
+        }
         UserDefaults.standard.set(scoreArray, forKey: "scoreArray")
         
         // show the game over view
@@ -507,7 +520,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             }
         }
     }
-    
     
     //Input standardizer: This function takes the pitch (euler x) and yaw (euler y), applies threshold and ceiling, and normalizes it.
     func inputNormalizer (pitch: Float, yaw: Float) -> (pitchNorm: Float, yawNorm: Float) {
