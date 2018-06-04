@@ -49,6 +49,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     var startAsteroidCreation: Bool = false
     var asteroidCreationTiming: Double = 0
+    let asteroidCreationTimeSpace = [4.0, 3.0, 2.0, 1.0]
     
     let horizontalBound: Float = 6 //was 7
     let upperBound: Float = 8 //was 8
@@ -120,7 +121,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // MARK: functions
     
     func initGameView() {
-        //gameView = self.view as! SCNView
         gameView.allowsCameraControl = false
         gameView.autoenablesDefaultLighting = true
         gameView.delegate = self
@@ -259,7 +259,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameOverLabel.text = "GAME OVER"
         gameOverLabel.font = UIFont.boldSystemFont(ofSize: 26)
         gameOverLabel.textAlignment = .center
-//        gameOverLabel.textColor = UIColor.lightGray
+        // gameOverLabel.textColor = UIColor.lightGray
         // same as the title in the entry view
         gameOverLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         gameOverView.addSubview(gameOverLabel)
@@ -269,7 +269,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         finalScoreLabel.text = "Score:"
         finalScoreLabel.font = UIFont.boldSystemFont(ofSize: 26)
         finalScoreLabel.textAlignment = .center
-//        finalScoreLabel.textColor = UIColor.lightGray
+        // finalScoreLabel.textColor = UIColor.lightGray
         // same as the title in the entry view
         finalScoreLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         finalScoreLabel.restorationIdentifier = "finalScoreLabel"
@@ -327,7 +327,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     @objc func backMenu() {
-//        self.navigationController?.popViewController(animated: false)
         self.dismiss(animated: false, completion: nil)
     }
     
@@ -367,7 +366,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         shipNode.physicsBody?.angularVelocity = SCNVector4(0, 0, 0, 0)
         
         // show the pause view
-        UIView.animate(withDuration: 2, animations: {
+        UIView.animate(withDuration: 1.5, animations: {
             self.pauseView.alpha = 0.8
         }, completion: { (complete: Bool) in
             self.gameView.pause(self)
@@ -391,7 +390,9 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
         
         var scoreArray = UserDefaults.standard.object(forKey: "scoreArray") as? [Int] ?? [Int]()
-        scoreArray.append(score)
+        scoreArray.sort{ $0 > $1 }
+        if scoreArray.count < 20 { scoreArray.append(score) }
+        else if scoreArray.last! < score { scoreArray[scoreArray.endIndex-1] = score }
         UserDefaults.standard.set(scoreArray, forKey: "scoreArray")
         
         // show the game over view
@@ -401,7 +402,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                     (subView as! UILabel).text = "Score: \(self.score)"
                 }
             }
-            UIView.animate(withDuration: 2, animations: {
+            UIView.animate(withDuration: 1.5, animations: {
                 self.gameOverView.alpha = 0.8
             }, completion: { (complete: Bool) in
                 self.gameView.pause(self)
@@ -466,7 +467,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         //Get input from face for rocket
         faceNode = node
         //gameView.scene?.rootNode.childNode(withName: "rocket", recursively: true)?.transform = node.transform
-
     }
     
     
@@ -489,7 +489,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         if time > asteroidCreationTiming && gameState == GameState.playing {
             if startAsteroidCreation == true {
                 createAsteroid()
-                asteroidCreationTiming = time + 4
+                let timeSpaceIndex = score < 80 ? score/20 : 3
+                asteroidCreationTiming = time + asteroidCreationTimeSpace[timeSpaceIndex]
                 cleanUpAsteroids()
             } else {
                 asteroidCreationTiming = time + 3
