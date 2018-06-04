@@ -75,18 +75,18 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         if UIDevice.modelName == "iPhone X" {
             isIphoneX = true
-            inputThresh = 0.2 // Normalized value
-            yPosCeil = .pi/180 * 45 // Radians
-            yNegCeil = .pi/180 * 45
-            xPosCeil = .pi/180 * 45
-            xNegCeil = .pi/180 * 45
+            inputThresh = 0.1 // Normalized value
+            yPosCeil = .pi/180 * 20 // Radians
+            yNegCeil = .pi/180 * -20 //Around y axis (yaw)
+            xPosCeil = .pi/180 * 20 //Around x axis (pitch)
+            xNegCeil = .pi/180 * -15
         }
         else {
             inputThresh = 0.3 // Normalized value
             yPosCeil = .pi/180 * 60 // Radians
-            yNegCeil = .pi/180 * 60
-            xPosCeil = .pi/180 * 60
-            xNegCeil = .pi/180 * 60
+            yNegCeil = .pi/180 * -60 //Around y axis (yaw)
+            xPosCeil = .pi/180 * 60 //Around x axis (pitch)
+            xNegCeil = .pi/180 * -60
         }
         
         gameState = .playing
@@ -94,9 +94,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         objMotionControl.setDevicePitchOffset()
         
     }
-    
-    
-    
     
     // MARK: functions
     
@@ -229,19 +226,21 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameScene.isPaused = true
     }
     
-    //Input standardizer: This function takes the pitch (y) and yaw (x), applies threshold and ceiling, and normalizes it.
+    //Input standardizer: This function takes the pitch (euler x) and yaw (euler y), applies threshold and ceiling, and normalizes it.
     func inputNormalizer (pitch: Float, yaw: Float) -> (pitchNorm: Float, yawNorm: Float) {
         var tempPitch = pitch
-        var tempYaw = yaw
+        var tempYaw = -yaw
+
         //Apply the ceiling
-        if pitch > yPosCeil { tempPitch = yPosCeil
-        } else if pitch < yNegCeil { tempPitch = yNegCeil
-        } else { tempPitch = pitch
+        if tempPitch > xPosCeil { tempPitch = xPosCeil
+        } else if tempPitch < xNegCeil { tempPitch = xNegCeil
+        } else {
         }
-        if yaw > xPosCeil { tempYaw = xPosCeil
-        } else if yaw < xNegCeil { tempYaw = xNegCeil
-        } else { tempYaw = yaw
+        if tempYaw > yPosCeil { tempYaw = yPosCeil
+        } else if tempYaw < yNegCeil { tempYaw = yNegCeil
+        } else {
         }
+        
         //Convert to range 0 to 1
         let yOldRange:Float = ( yPosCeil - yNegCeil)
         let yNewRange:Float = (1 - -1)
@@ -249,6 +248,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         let xOldRange:Float = ( xPosCeil - xNegCeil)
         let xNewRange:Float = (1 - -1)
         tempYaw = (((tempYaw - xNegCeil) * xNewRange) / xOldRange) + -1
+        //print("Pitch, yaw is \(tempPitch) and \(tempYaw)")
         //Apply threshold
         if abs(tempPitch) < inputThresh {
             tempPitch = 0
@@ -256,7 +256,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         if abs(tempYaw) < inputThresh {
             tempYaw = 0
         }
-        
+
         return (tempPitch, tempYaw)
     }
     
@@ -310,8 +310,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 let (yTemp, xTemp) = inputNormalizer(pitch: faceNode.eulerAngles.y, yaw: faceNode.eulerAngles.x)
                 shipControlForce = SCNVector3(
                 //eulerAngles contains three elements: pitch, yaw and roll, in radians
-                x: Float(yTemp*60) + horizontalCentralForce,
-                y: Float(xTemp*100) + verticalCentralForce,
+                x: Float(yTemp*5) + horizontalCentralForce,
+                y: Float(xTemp*5) + verticalCentralForce,
                 z: 0)
             } else {
             shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
