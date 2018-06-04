@@ -390,6 +390,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             }
         }
         
+        var scoreArray = UserDefaults.standard.object(forKey: "scoreArray") as? [Int] ?? [Int]()
+        scoreArray.append(score)
+        UserDefaults.standard.set(scoreArray, forKey: "scoreArray")
+        
         // show the game over view
         DispatchQueue.main.async {
             for subView in self.gameOverView.subviews {

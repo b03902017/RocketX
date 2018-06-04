@@ -51,7 +51,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                 </state>
                                 <connections>
-                                    <segue destination="tWi-dF-hlC" kind="show" id="1WB-Fu-QHM"/>
+                                    <segue destination="tWi-dF-hlC" kind="show" identifier="scoreTableSegue" id="1WB-Fu-QHM"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZoG-ck-NGD">

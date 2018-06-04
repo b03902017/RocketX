@@ -10,13 +10,10 @@ import UIKit
 
 class ScoreTableViewController: UITableViewController {
     
-    var scores = [String]()
+    var scores = [Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Test data
-        scores.append("40")
-        scores.append("50")
         
         self.view.layer.sublayerTransform = CATransform3DMakeTranslation(10, 5, 0);
         // Uncomment the following line to preserve selection between presentations
@@ -51,7 +48,7 @@ class ScoreTableViewController: UITableViewController {
         
         // Configure the cell...
         if indexPath.row < scores.count {
-            cell.textLabel!.text = scores[indexPath.row]
+            cell.textLabel!.text = String(scores[indexPath.row])
         } else {
             cell.textLabel!.text = ""
         }
