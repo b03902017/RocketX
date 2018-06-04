@@ -16,11 +16,7 @@ class ScoreTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.view.layer.sublayerTransform = CATransform3DMakeTranslation(10, 5, 0);
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.tableView.rowHeight = 44.0
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,7 +33,7 @@ class ScoreTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return scores.count
+        return scores.count + 1
     }
 
     
@@ -45,24 +41,15 @@ class ScoreTableViewController: UITableViewController {
         
         // Configure the cell...
         let cell = tableView.dequeueReusableCell(withIdentifier: "ScoreCell", for: indexPath)
+        cell.textLabel!.font = UIFont.monospacedDigitSystemFont(ofSize: cell.textLabel!.font.pointSize, weight: .regular)
         
-        // Configure the cell...
-        if indexPath.row < scores.count {
-            cell.textLabel!.text = String(format: "%d", scores[indexPath.row])
+        if indexPath.row == 0 {
+            cell.textLabel!.text = "Rank : Score"
+        } else if indexPath.row <= scores.count {
+            cell.textLabel!.text = String(format: " %02d    :  %d", indexPath.row, scores[indexPath.row-1])
         } else {
             cell.textLabel!.text = ""
         }
         return cell
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
