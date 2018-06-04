@@ -569,10 +569,11 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         if isIphoneX == true {
             //face control
             if faceNode != nil {
+                let (yTemp, xTemp) = inputNormalizer(pitch: faceNode.eulerAngles.y, yaw: faceNode.eulerAngles.x)
                 shipControlForce = SCNVector3(
-                    // eulerAngles contains three elements: pitch, yaw and roll, in radians
-                    x: Float(faceNode.eulerAngles.y/(.pi)*180*6.0) + horizontalCentralForce,
-                    y: Float(faceNode.eulerAngles.x/(.pi)*180*10.0) + verticalCentralForce,
+                    //eulerAngles contains three elements: pitch, yaw and roll, in radians
+                    x: Float(yTemp*5) + horizontalCentralForce,
+                    y: Float(xTemp*5) + verticalCentralForce,
                     z: 0)
             } else {
                 shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
