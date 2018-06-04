@@ -49,7 +49,11 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     var startAsteroidCreation: Bool = false
     var asteroidCreationTiming: Double = 0
+    // used for increasing the difficulty as the score arises
     let asteroidCreationTimeSpace = [4.0, 3.0, 2.0, 1.0]
+    
+    // used for skip the gameOver animate after flash animate
+    var isCollision: Bool = false
     
     let horizontalBound: Float = 6 //was 7
     let upperBound: Float = 8 //was 8
@@ -64,8 +68,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     @IBOutlet var gameView: SCNView!
     @IBOutlet weak var arView: ARSCNView!
-    
-    
     
     // MARK:
     override func viewDidLoad() {
@@ -183,25 +185,27 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initPauseView() {
         // the background rectangle
-        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
+//        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
+//        pauseView.layer.cornerRadius = pauseView.frame.width/4.0
+        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width, height: gameView.bounds.height))
         pauseView.backgroundColor = UIColor.black
         // If want to change the background color:
         // pauseView.backgroundColor = UIColor(red: 0/255, green: 30/255, blue: 80/255, alpha: 0.8)
-        pauseView.layer.cornerRadius = pauseView.frame.width/4.0
+        
         pauseView.clipsToBounds = true
         pauseView.center = CGPoint(x: gameView.bounds.midX, y: gameView.bounds.midY)
         pauseView.alpha = 0
         gameView.addSubview(pauseView)
         
         // add transparent gradient
-        let gradient = CAGradientLayer()
-        gradient.startPoint = CGPoint(x: 0, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0, y:0.17)
-        let whiteColor = UIColor.white
-        gradient.colors = [whiteColor.withAlphaComponent(0.0).cgColor, whiteColor.withAlphaComponent(1.0), whiteColor.withAlphaComponent(1.0).cgColor]
-        gradient.locations = [NSNumber(value: 0.0), NSNumber(value: 0.5), NSNumber(value: 1.0)]
-        gradient.frame = pauseView.bounds
-        pauseView.layer.mask = gradient
+//        let gradient = CAGradientLayer()
+//        gradient.startPoint = CGPoint(x: 0, y: 0.0)
+//        gradient.endPoint = CGPoint(x: 0, y:0.17)
+//        let whiteColor = UIColor.white
+//        gradient.colors = [whiteColor.withAlphaComponent(0.0).cgColor, whiteColor.withAlphaComponent(1.0), whiteColor.withAlphaComponent(1.0).cgColor]
+//        gradient.locations = [NSNumber(value: 0.0), NSNumber(value: 0.5), NSNumber(value: 1.0)]
+//        gradient.frame = pauseView.bounds
+//        pauseView.layer.mask = gradient
         
         let pauseLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
         pauseLabel.center = CGPoint(x: pauseView.bounds.midX, y: pauseView.bounds.midY-100)
@@ -246,9 +250,11 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initGameOverView() {
         // the background rectangle
-        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
+//        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
+//        gameOverView.layer.cornerRadius = gameOverView.frame.width/4.0
+        // overlay the whole gameView
+        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width, height: gameView.bounds.height))
         gameOverView.backgroundColor = UIColor.black
-        gameOverView.layer.cornerRadius = gameOverView.frame.width/4.0
         gameOverView.clipsToBounds = true
         gameOverView.center = CGPoint(x: gameView.bounds.midX, y: gameView.bounds.midY)
         gameOverView.alpha = 0
@@ -351,19 +357,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         flashView.layer.cornerRadius = circleRadius
         let positionOnScreen = gameView.projectPoint(shipNode.presentation.position)
         flashView.center = CGPoint(x: Double(positionOnScreen.x), y: Double(positionOnScreen.y))
-        gameView.addSubview(flashView)
-        UIView.animate(withDuration: 0.3, animations: {
-            flashView.alpha = 0.8
-            flashView.transform = CGAffineTransform(scaleX: 50.0, y: 50.0)
+        self.view.addSubview(flashView)
+        UIView.animate(withDuration: 0.6, animations: {
+            flashView.alpha = 0.2
+            flashView.transform = CGAffineTransform(scaleX: 70.0, y: 70.0)
             flashView.center = CGPoint(x: Double(positionOnScreen.x), y: Double(positionOnScreen.y))
         }, completion: { (complete: Bool) in
-            UIView.animate(withDuration: 0.2, animations: {
-                flashView.alpha = 0
-                flashView.transform = CGAffineTransform(scaleX: 1/50.0, y: 1/50.0)
-                flashView.center = CGPoint(x: Double(positionOnScreen.x), y: Double(positionOnScreen.y))
-            }, completion: { (complete: Bool) in
-                flashView.removeFromSuperview()
-            })
+            flashView.removeFromSuperview()
         })
     }
     
@@ -391,7 +391,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         shipNode.physicsBody?.angularVelocity = SCNVector4(0, 0, 0, 0)
         
         // show the pause view
-        UIView.animate(withDuration: 1.5, animations: {
+        UIView.animate(withDuration: 1.2, animations: {
             self.pauseView.alpha = 0.8
         }, completion: { (complete: Bool) in
             self.gameView.pause(self)
@@ -427,12 +427,18 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                     (subView as! UILabel).text = "Score: \(self.score)"
                 }
             }
-            UIView.animate(withDuration: 1.5, animations: {
+            if self.isCollision == true {
                 self.gameOverView.alpha = 0.8
-            }, completion: { (complete: Bool) in
                 self.gameView.pause(self)
                 print("complete game over view")
-            })
+            } else {
+                UIView.animate(withDuration: 1.2, animations: {
+                    self.gameOverView.alpha = 0.8
+                }, completion: { (complete: Bool) in
+                    self.gameView.pause(self)
+                    print("complete game over view")
+                })
+            }
         }
     }
     
@@ -480,9 +486,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // Function that handles collision between rocket and asteroids
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         if gameState == GameState.playing {
-            flashAnimate()
-            gameState = GameState.dead
-            print("collision")
+            DispatchQueue.main.async {
+                self.isCollision = true
+                self.flashAnimate()
+                self.gameState = GameState.dead
+                self.isCollision = false
+                print("collision")
+            }
         }
     }
     
@@ -573,7 +583,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             //device motion control
             shipControlForce = SCNVector3(
                 x: Float(objMotionControl.roll*6.0) + horizontalCentralForce,
-                y: Float(((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce,
+                y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce,
                 z: 0)
 //            print(objMotionControl.devicePitchOffset)
         }

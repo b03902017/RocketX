@@ -48,7 +48,7 @@ class ScoreTableViewController: UITableViewController {
         
         // Configure the cell...
         if indexPath.row < scores.count {
-            cell.textLabel!.text = String(scores[indexPath.row])
+            cell.textLabel!.text = String(format: "%d", scores[indexPath.row])
         } else {
             cell.textLabel!.text = ""
         }
