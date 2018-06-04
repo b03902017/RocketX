@@ -328,12 +328,12 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameState == GameState.playing {
+            gameState = GameState.paused
             pauseGame()
         }
     }
     
     func pauseGame() {
-        gameState = GameState.paused
         gameScene.rootNode.removeAllActions()
         for node in gameScene.rootNode.childNodes {
             if node.name == "asteroid" {
@@ -347,8 +347,9 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         lastShipAngularVelocity = shipNode.physicsBody?.angularVelocity
         shipNode.physicsBody?.angularVelocity = SCNVector4(0, 0, 0, 0)
         
+        // show the pause view
         UIView.animate(withDuration: 2, animations: {
-            self.pauseView.alpha = 0.5
+            self.pauseView.alpha = 0.7
         }, completion: { (complete: Bool) in
             print("complete pause")
         })
@@ -374,7 +375,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 }
             }
             UIView.animate(withDuration: 2, animations: {
-                self.gameOverView.alpha = 0.5
+                self.gameOverView.alpha = 0.7
             }, completion: { (complete: Bool) in
                 print("complete game over view")
             })
