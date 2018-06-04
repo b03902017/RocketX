@@ -31,7 +31,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                 </state>
                                 <connections>
-                                    <segue destination="aCb-NO-5R2" kind="show" identifier="startSegue" animates="NO" id="Czr-r3-0pO"/>
+                                    <segue destination="aCb-NO-5R2" kind="presentation" identifier="startSegue" animates="NO" id="Czr-r3-0pO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9GD-Z2-aw2">
@@ -114,7 +114,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HxM-Q3-f58"/>
                     </view>
-                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="arView" destination="Pji-hX-mvy" id="txi-8I-1ux"/>
                         <outlet property="gameView" destination="mfa-3f-I1Q" id="p0o-WW-gck"/>

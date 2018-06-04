@@ -22,6 +22,7 @@ enum GameState: Int {
     case playing
     case dead
     case paused
+    case blocked
 }
 
 
@@ -69,6 +70,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
         initGameView()
         initARView()
         initScene()
@@ -104,9 +106,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameScene.isPaused = false
         
         self.arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
-        
-        // Hide the navigation bar on the this view controller
-        self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -115,9 +114,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         // Pause the view's session
         arView.session.pause()
         gameScene.isPaused = true
-        
-        // Show the navigation bar on other view controllers
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     
@@ -139,7 +135,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameView.scene = gameScene
         gameView.scene?.physicsWorld.gravity = SCNVector3(x: 0, y: 0, z: 0)
         gameView.scene?.physicsWorld.speed = 1
-        gameScene.background.contents = UIColor.darkGray
+        gameScene.background.contents = UIColor.black
         gameScene.physicsWorld.contactDelegate = self
         
     }
@@ -177,30 +173,44 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initScore() {
         scoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
-        scoreLabel.center = CGPoint(x: gameView.bounds.minX+20, y: gameView.bounds.minY+15)
+        scoreLabel.center = CGPoint(x: self.view.bounds.minX+40, y: self.view.bounds.minY+40)
         scoreLabel.text = "\(self.score)"
         scoreLabel.font = UIFont.boldSystemFont(ofSize: 26)
         scoreLabel.textAlignment = .center
         scoreLabel.textColor = UIColor.lightGray
-        gameView.addSubview(scoreLabel)
+        self.view.addSubview(scoreLabel)
     }
     
     func initPauseView() {
         // the background rectangle
-        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.5))
+        pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
         pauseView.backgroundColor = UIColor.black
+        // If want to change the background color:
+        // pauseView.backgroundColor = UIColor(red: 0/255, green: 30/255, blue: 80/255, alpha: 0.8)
         pauseView.layer.cornerRadius = pauseView.frame.width/4.0
         pauseView.clipsToBounds = true
         pauseView.center = CGPoint(x: gameView.bounds.midX, y: gameView.bounds.midY)
         pauseView.alpha = 0
         gameView.addSubview(pauseView)
         
+        // add transparent gradient
+        let gradient = CAGradientLayer()
+        gradient.startPoint = CGPoint(x: 0, y: 0.0)
+        gradient.endPoint = CGPoint(x: 0, y:0.17)
+        let whiteColor = UIColor.white
+        gradient.colors = [whiteColor.withAlphaComponent(0.0).cgColor, whiteColor.withAlphaComponent(1.0), whiteColor.withAlphaComponent(1.0).cgColor]
+        gradient.locations = [NSNumber(value: 0.0), NSNumber(value: 0.5), NSNumber(value: 1.0)]
+        gradient.frame = pauseView.bounds
+        pauseView.layer.mask = gradient
+        
         let pauseLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
         pauseLabel.center = CGPoint(x: pauseView.bounds.midX, y: pauseView.bounds.midY-100)
         pauseLabel.text = "PAUSED"
         pauseLabel.font = UIFont.boldSystemFont(ofSize: 26)
         pauseLabel.textAlignment = .center
-        pauseLabel.textColor = UIColor.lightGray
+        // pauseLabel.textColor = UIColor.lightGray
+        // same as the title in the entry view
+        pauseLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         pauseView.addSubview(pauseLabel)
         
         let returnButton = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
@@ -236,7 +246,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initGameOverView() {
         // the background rectangle
-        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.5))
+        gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
         gameOverView.backgroundColor = UIColor.black
         gameOverView.layer.cornerRadius = gameOverView.frame.width/4.0
         gameOverView.clipsToBounds = true
@@ -249,7 +259,9 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameOverLabel.text = "GAME OVER"
         gameOverLabel.font = UIFont.boldSystemFont(ofSize: 26)
         gameOverLabel.textAlignment = .center
-        gameOverLabel.textColor = UIColor.lightGray
+//        gameOverLabel.textColor = UIColor.lightGray
+        // same as the title in the entry view
+        gameOverLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         gameOverView.addSubview(gameOverLabel)
         
         let finalScoreLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
@@ -257,7 +269,9 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         finalScoreLabel.text = "Score:"
         finalScoreLabel.font = UIFont.boldSystemFont(ofSize: 26)
         finalScoreLabel.textAlignment = .center
-        finalScoreLabel.textColor = UIColor.lightGray
+//        finalScoreLabel.textColor = UIColor.lightGray
+        // same as the title in the entry view
+        finalScoreLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         finalScoreLabel.restorationIdentifier = "finalScoreLabel"
         gameOverView.addSubview(finalScoreLabel)
         
@@ -294,6 +308,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         accumulateScore()
         startAsteroidCreation = false
         initShip()
+        self.gameView.play(self)
         gameState = GameState.playing
     }
     
@@ -307,11 +322,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             }
         }
         accumulateScore()
+        self.gameView.play(self)
         gameState = GameState.playing
     }
     
     @objc func backMenu() {
-        self.navigationController?.popViewController(animated: false)
+//        self.navigationController?.popViewController(animated: false)
+        self.dismiss(animated: false, completion: nil)
     }
     
     func accumulateScore() {
@@ -334,6 +351,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     func pauseGame() {
+        // prevent from keep calling thif func in touchesBegan()
+        gameState = GameState.blocked
         gameScene.rootNode.removeAllActions()
         for node in gameScene.rootNode.childNodes {
             if node.name == "asteroid" {
@@ -349,13 +368,17 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         // show the pause view
         UIView.animate(withDuration: 2, animations: {
-            self.pauseView.alpha = 0.7
+            self.pauseView.alpha = 0.8
         }, completion: { (complete: Bool) in
+            self.gameView.pause(self)
             print("complete pause")
         })
     }
     
     func gameOver() {
+        // prevent from keep calling thif func in render()
+        gameState = GameState.blocked
+        
         // stop accumulate score
         gameScene.rootNode.removeAllActions()
         
@@ -371,12 +394,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         DispatchQueue.main.async {
             for subView in self.gameOverView.subviews {
                 if subView.restorationIdentifier == "finalScoreLabel" {
-                    (subView as! UILabel).text = "SCORE: \(self.score)"
+                    (subView as! UILabel).text = "Score: \(self.score)"
                 }
             }
             UIView.animate(withDuration: 2, animations: {
-                self.gameOverView.alpha = 0.7
+                self.gameOverView.alpha = 0.8
             }, completion: { (complete: Bool) in
+                self.gameView.pause(self)
                 print("complete game over view")
             })
         }
@@ -394,7 +418,9 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         let randomAsteroidPositionY = Float((drand48()-0.5)*asteroidSpawnRange)
         asteroidNode.position = SCNVector3(x: randomAsteroidPositionX, y: randomAsteroidPositionY, z: -50)
         
-        // put the asteroid into the rootNode
+        asteroidNode.geometry?.firstMaterial?.diffuse.contents  = UIImage(named: "asteroid")
+        
+        // set the physicbody and put the asteroid into the rootNode
         asteroidNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         asteroidNode.physicsBody?.categoryBitMask = CollisionMask.asteroid.rawValue
         asteroidNode.physicsBody?.damping = 0
@@ -423,8 +449,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // MARK: SCNPhysicsContactDelegate Functions
     // Function that handles collision between rocket and asteroids
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        gameState = GameState.dead
-        print("collision")
+        if gameState == GameState.playing {
+            gameState = GameState.dead
+            print("collision")
+        }
     }
     
     
@@ -439,6 +467,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
+        if gameState == GameState.blocked {
+            return
+        }
         
         //dead if ship is too far away
         if abs(shipNode.presentation.position.x) > horizontalBound || shipNode.presentation.position.y > upperBound || shipNode.presentation.position.y < lowerBound {
