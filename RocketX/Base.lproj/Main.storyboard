@@ -21,7 +21,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rocket X" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CvC-CP-jkZ">
                                 <rect key="frame" x="64.333333333333329" y="200" width="245.66666666666669" height="72"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="60"/>
-                                <color key="textColor" red="0.62305715424392238" green="0.69980257422181213" blue="0.88169259327063287" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.62305715419999996" green="0.69980257420000003" blue="0.88169259330000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q7U-LG-0uS">
@@ -31,7 +31,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                 </state>
                                 <connections>
-                                    <segue destination="aCb-NO-5R2" kind="presentation" identifier="startSegue" id="Czr-r3-0pO"/>
+                                    <segue destination="aCb-NO-5R2" kind="show" identifier="startSegue" animates="NO" id="Czr-r3-0pO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9GD-Z2-aw2">
@@ -114,6 +114,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HxM-Q3-f58"/>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="arView" destination="Pji-hX-mvy" id="txi-8I-1ux"/>
                         <outlet property="gameView" destination="mfa-3f-I1Q" id="p0o-WW-gck"/>
@@ -134,7 +135,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🚀  Tap the screen to pause the game." lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBJ-eA-pl1">
                                 <rect key="frame" x="37" y="321.66666666666669" width="300" height="80"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="StG-Ru-pxK"/>
+                                    <constraint firstAttribute="width" constant="300" id="GQP-fA-pGe"/>
                                     <constraint firstAttribute="height" constant="80" id="ZKd-IU-ZVx"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>

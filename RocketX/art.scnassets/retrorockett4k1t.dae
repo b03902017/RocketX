@@ -4,8 +4,8 @@
   <contributor>
    <authoring_tool>SceneKit Collada Exporter v1.0</authoring_tool>
   </contributor>
-  <created>2018-06-02T14:18:49Z</created>
-  <modified>2018-06-02T14:18:49Z</modified>
+  <created>2018-06-04T04:22:21Z</created>
+  <modified>2018-06-04T04:22:21Z</modified>
   <unit meter="1.000000"/>
   <up_axis>Z_UP</up_axis>
  </asset>
@@ -868,146 +868,148 @@
  </library_geometries>
  <library_visual_scenes>
   <visual_scene id="scene60">
-   <node id="MainBody" name="MainBody">
-    <matrix>1 0 0 0 0 1 0 0 0 0 2 0 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry13">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement17" target="#bodymat-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="WindowFrame" name="WindowFrame">
-    <matrix>0.5 0 0 0 0 3.7749e-08 -0.5 -0.8543578 0 0.5 3.7749e-08 3.99058e-10 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry18">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement22" target="#doorframe-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-        <bind_vertex_input semantic="CHANNEL7" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Window" name="Window">
-    <matrix>0.5339634 0 0 0 0 4.03131e-08 -0.5339634 -0.8336647 0 0.5339634 4.03131e-08 0 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry23">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement26" target="#winmat-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Fin_002" name="Fin_002">
-    <matrix>-7.01066e-08 1.58553e-08 1 -4.76837e-07 0.4303111 0.9026806 1.58553e-08 0.8905397 -0.9026806 0.4303111 -7.01066e-08 -3.804264 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry27">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement31" target="#finmat-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Fin_001" name="Fin_001">
-    <matrix>-0.3726603 -0.7817444 -0.5000001 -0.7712299 -0.2151556 -0.4513403 0.8660254 -0.4452701 -0.9026806 0.4303111 -7.01066e-08 -3.804264 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry27">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement31" target="#finmat-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Fin" name="Fin">
-    <matrix>0.3726604 0.7817444 -0.4999999 0.7712301 -0.2151555 -0.4513403 -0.8660254 -0.4452697 -0.9026806 0.4303111 -7.01066e-08 -3.804264 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry27">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement31" target="#finmat-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="CableMount" name="CableMount">
-    <matrix>0.06115094 0.0143208 0 0.9545265 -0.005829318 0.1502286 0 -0.1018172 0 0 0.06142816 -0.567901 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry32">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement36" target="#doorframe-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-        <bind_vertex_input semantic="CHANNEL7" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Plug" name="Plug">
-    <matrix>6.71283e-09 -0.007327002 0.01383892 1.008914 0 0.03368898 0.00300982 -0.0314967 -0.03447655 -1.42662e-09 2.69454e-09 -0.5632246 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry37">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement40" target="#cable2-material"/>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Plug_001" name="Plug_001">
-    <matrix>6.86299e-09 0.01181321 0.01334336 0.997261 0 0.03320924 -0.00474651 -0.1750702 -0.03524776 2.30012e-09 2.59805e-09 -0.5791689 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry41">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement44" target="#cable1-material"/>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Cap" name="Cap">
-    <matrix>0.964873 0 0 0 0 0.964873 0 0 0 0 2.06201 -0.04671226 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry45">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement49" target="#nosemat-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="Hatch" name="Hatch">
-    <matrix>0.06370734 0.006113694 -1.64358e-05 -0.05578999 -0.006112925 0.06370163 0.000858112 -0.556161 9.83316e-05 -0.000852618 0.06399426 -1.686211 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry50">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement54" target="#doorframe-material">
-        <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
-        <bind_vertex_input semantic="CHANNEL7" input_semantic="TEXCOORD" input_set="1"/>
-       </instance_material>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
-   </node>
-   <node id="HatchHandle" name="HatchHandle">
-    <matrix>0.1393093 -0.001572355 -0.01808265 -0.06768599 -0.01388944 -0.01539297 -0.1814216 -0.9486408 3.76868e-05 0.1391423 -0.02027457 -2.057977 0 0 0 1 </matrix>
-    <instance_geometry url="#geometry55">
-     <bind_material>
-      <technique_common>
-       <instance_material symbol="geometryElement59" target="#doorknob-material"/>
-      </technique_common>
-     </bind_material>
-    </instance_geometry>
+   <node id="Rocket" name="Rocket">
+    <node id="MainBody" name="MainBody">
+     <matrix>0.9999999 0 0 0 0 0.9999999 0 0 0 0 2 0 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry13">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement17" target="#bodymat-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="WindowFrame" name="WindowFrame">
+     <matrix>0.5 0 0 0 0 8.940696e-08 -0.4999999 -0.8543577 0 0.4999999 8.940696e-08 3.99058e-10 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry18">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement22" target="#doorframe-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+         <bind_vertex_input semantic="CHANNEL7" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Window" name="Window">
+     <matrix>0.5339633 0 0 0 0 9.548008e-08 -0.5339633 -0.8336647 0 0.5339633 9.548008e-08 0 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry23">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement26" target="#winmat-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Fin_002" name="Fin_002">
+     <matrix>-1.117587e-08 0 0.9999999 -4.76837e-07 0.4303111 0.9026805 0 0.8905396 -0.9026805 0.4303111 0 -3.804264 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry27">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement31" target="#finmat-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Fin_001" name="Fin_001">
+     <matrix>-0.3726603 -0.7817444 -0.5 -0.7712299 -0.2151556 -0.4513404 0.8660254 -0.4452701 -0.9026806 0.430311 -1.788139e-07 -3.804264 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry27">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement31" target="#finmat-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Fin" name="Fin">
+     <matrix>0.3726604 0.7817442 -0.4999998 0.77123 -0.2151554 -0.4513401 -0.8660253 -0.4452697 -0.9026805 0.430311 0 -3.804264 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry27">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement31" target="#finmat-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="CableMount" name="CableMount">
+     <matrix>0.06115093 0.0143208 0 0.9545264 -0.005829317 0.1502286 -0 -0.1018172 -0 0 0.06142816 -0.567901 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry32">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement36" target="#doorframe-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+         <bind_vertex_input semantic="CHANNEL7" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Plug" name="Plug">
+     <matrix>1.075644e-08 -0.007327001 0.01383892 1.008914 1.284351e-09 0.03368898 0.00300982 -0.0314967 -0.03447654 -5.137406e-10 4.220736e-09 -0.5632246 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry37">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement40" target="#cable2-material"/>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Plug_001" name="Plug_001">
+     <matrix>2.087799e-08 0.01181321 0.01334336 0.9972609 5.252325e-10 0.03320923 -0.004746508 -0.1750702 -0.03524775 4.727094e-09 8.44147e-09 -0.5791689 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry41">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement44" target="#cable1-material"/>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Cap" name="Cap">
+     <matrix>0.964873 0 0 0 0 0.964873 0 0 0 0 2.06201 -0.04671226 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry45">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement49" target="#nosemat-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="Hatch" name="Hatch">
+     <matrix>0.06370733 0.006113692 -1.643581e-05 -0.05578998 -0.006112924 0.06370162 0.0008581119 -0.5561609 9.833155e-05 -0.0008526178 0.06399425 -1.686211 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry50">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement54" target="#doorframe-material">
+         <bind_vertex_input semantic="CHANNEL2" input_semantic="TEXCOORD" input_set="1"/>
+         <bind_vertex_input semantic="CHANNEL7" input_semantic="TEXCOORD" input_set="1"/>
+        </instance_material>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
+    <node id="HatchHandle" name="HatchHandle">
+     <matrix>0.1393093 -0.001572358 -0.01808265 -0.06768598 -0.01388944 -0.015393 -0.1814216 -0.9486408 3.768913e-05 0.1391423 -0.0202746 -2.057977 0 0 0 1 </matrix>
+     <instance_geometry url="#geometry55">
+      <bind_material>
+       <technique_common>
+        <instance_material symbol="geometryElement59" target="#doorknob-material"/>
+       </technique_common>
+      </bind_material>
+     </instance_geometry>
+    </node>
    </node>
   </visual_scene>
  </library_visual_scenes>
