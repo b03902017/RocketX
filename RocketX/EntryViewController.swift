@@ -45,7 +45,7 @@ class EntryViewController: UIViewController {
     
         func fadeViewIn(view : UIView) {
             // Fade in the title label
-            let animationDuration = 8.0
+            let animationDuration = 4.0
             UIView.animate(withDuration: animationDuration, animations: { () -> Void in
                 view.alpha = 1
             })

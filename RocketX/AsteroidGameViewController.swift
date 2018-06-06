@@ -115,6 +115,19 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+//        let url = Bundle.main.url(forResource: "Glass_Lux_-_Im_A_Machine", withExtension: "mp3")!
+//        var player: AVAudioPlayer!
+//        print("There should be music")
+//        do {
+//            player = try AVAudioPlayer(contentsOf: url)
+//            guard let player = player else { return }
+//
+//            player.prepareToPlay()
+//            player.play()
+//        } catch let error {
+//            print(error.localizedDescription)
+//        }
+        
         // Create a session configuration
         guard ARFaceTrackingConfiguration.isSupported else { return }
         
@@ -156,7 +169,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameView.scene = gameScene
         gameView.scene?.physicsWorld.gravity = SCNVector3(x: 0, y: 0, z: 0)
         gameView.scene?.physicsWorld.speed = 1
-        gameScene.background.contents = UIColor.black
+        gameScene.background.contents = UIColor.black //UIImage(named: "background.jpg")
         gameScene.physicsWorld.contactDelegate = self
         
     }
@@ -172,6 +185,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameScene.rootNode.addChildNode(cameraNode)
     }
     
+    
     func initShip() {
         //set the ship
         let shipScene = SCNScene(named: "art.scnassets/retrorockett4k1t.dae")
@@ -181,7 +195,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         shipNode.eulerAngles = SCNVector3(x: -(Float.pi/2), y: 0, z: 0)
         // setting the physicsbody of the ship
         shipNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        shipNode.physicsBody?.damping = 0.05
+        shipNode.physicsBody?.damping = 0.4
         shipNode.physicsBody?.angularDamping = 0.9
         shipNode.physicsBody?.categoryBitMask = CollisionMask.ship.rawValue
         shipNode.physicsBody?.contactTestBitMask = CollisionMask.asteroid.rawValue
@@ -544,6 +558,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         let xNewRange:Float = (1 - -1)
         tempYaw = (((tempYaw - xNegCeil) * xNewRange) / xOldRange) + -1
         //print("Pitch, yaw is \(tempPitch) and \(tempYaw)")
+        
         //Apply threshold
         if abs(tempPitch) < inputThresh {
             tempPitch = 0
@@ -630,8 +645,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 let (yTemp, xTemp) = inputNormalizer(pitch: faceNode.eulerAngles.y, yaw: faceNode.eulerAngles.x)
                 shipControlForce = SCNVector3(
                     //eulerAngles contains three elements: pitch, yaw and roll, in radians
-                    x: Float(yTemp*5) + horizontalCentralForce,
-                    y: Float(xTemp*5) + verticalCentralForce,
+                    x: Float(yTemp*abs(yTemp)*3) + horizontalCentralForce,
+                    y: Float(xTemp*abs(xTemp)*3) + verticalCentralForce,
                     z: 0)
             } else {
                 shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
