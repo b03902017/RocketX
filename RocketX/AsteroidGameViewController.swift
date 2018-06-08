@@ -645,8 +645,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 let (yTemp, xTemp) = inputNormalizer(pitch: faceNode.eulerAngles.y, yaw: faceNode.eulerAngles.x)
                 shipControlForce = SCNVector3(
                     //eulerAngles contains three elements: pitch, yaw and roll, in radians
-                    x: Float(yTemp*abs(yTemp)*3) + horizontalCentralForce,
-                    y: Float(xTemp*abs(xTemp)*3) + verticalCentralForce,
+                    x: Float(yTemp*3) + horizontalCentralForce,
+                    y: Float(xTemp*3) + verticalCentralForce,
                     z: 0)
             } else {
                 shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
