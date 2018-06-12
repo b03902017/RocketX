@@ -261,8 +261,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="14" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pd9-Mu-s8Q">
-                                <rect key="frame" x="37" y="60" width="300" height="315.33333333333331"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="15" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pd9-Mu-s8Q">
+                                <rect key="frame" x="37" y="60" width="300" height="367.66666666666669"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="Cxh-tT-jtc"/>
                                 </constraints>
@@ -271,9 +271,10 @@ Marcus Groth (辜楷牧)
 許少昀 (Willy Hsu) 
 曹峻寧 (Chun-Ning Tsao)
 
- for the 2018 Mobile Phone Programming course at NTU National Taiwan University (國立台灣大學).
+ for the 2018 Mobile Phone Programming course at NTU National Taiwan University (國立臺灣大學).
  
-Rocket model by t4k1t. </string>
+Rocket model by t4k1t.
+Asteroid texture by Spiral Graphics.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
