@@ -7,16 +7,27 @@
 //
 
 import UIKit
+import AVFoundation
 
 class EntryViewController: UIViewController {
 
     @IBOutlet weak var gameTitle: UILabel!
+    var backgroundMusic: AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         gameTitle.alpha = 0
+        
+        // Prepare the background music
+        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "entry", ofType: "mp3")! )
+        do {
+            backgroundMusic = try AVAudioPlayer(contentsOf: url)
+            backgroundMusic?.numberOfLoops = -1
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,6 +42,9 @@ class EntryViewController: UIViewController {
         let font:UIFont = UIFont.systemFont(ofSize: 26.0);
         backBarButton.setTitleTextAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.baselineOffset: -2], for: UIControlState.normal);
         self.navigationItem.backBarButtonItem = backBarButton
+        
+        // Play the background music
+        backgroundMusic?.play()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -76,6 +90,11 @@ class EntryViewController: UIViewController {
             let scoreArray = UserDefaults.standard.object(forKey: "scoreArray") as? [Int] ?? [Int]()
             destinationViewController.scores = scoreArray
             destinationViewController.tableView.reloadData()
+        }
+        
+        // Pause the background music
+        if segue.identifier == "startSegue" {
+            backgroundMusic!.stop( )
         }
     }
 }

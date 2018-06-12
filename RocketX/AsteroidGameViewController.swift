@@ -33,6 +33,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     var objMotionControl = MotionControl()
     
+    var backgroundMusic: AVAudioPlayer!
+    
     var isIphoneX: Bool = false
     
     var gameScene: SCNScene!
@@ -89,6 +91,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         initScore()
         initPauseView()
         initGameOverView()
+        initMusicPlayer()
         
         if UIDevice.modelName == "iPhone X" {
             isIphoneX = true
@@ -110,24 +113,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         objMotionControl.setDevicePitchOffset()
         accumulateScore()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        let url = Bundle.main.url(forResource: "Glass_Lux_-_Im_A_Machine", withExtension: "mp3")!
-//        var player: AVAudioPlayer!
-//        print("There should be music")
-//        do {
-//            player = try AVAudioPlayer(contentsOf: url)
-//            guard let player = player else { return }
-//
-//            player.prepareToPlay()
-//            player.play()
-//        } catch let error {
-//            print(error.localizedDescription)
-//        }
         
         // Create a session configuration
         guard ARFaceTrackingConfiguration.isSupported else { return }
@@ -142,6 +131,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameScene.isPaused = false
         
         self.arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+        
+        backgroundMusic.play()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -150,6 +141,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         // Pause the view's session
         arView.session.pause()
         gameScene.isPaused = true
+        backgroundMusic.stop()
     }
     
     
@@ -327,6 +319,16 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         backMenuButton.isEnabled = true
         backMenuButton.addTarget(self, action: #selector(AsteroidGameViewController.backMenu), for: .touchUpInside)
         gameOverView.addSubview(backMenuButton)
+    }
+    
+    func initMusicPlayer() {
+        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "game", ofType: "mp3")! )
+        do {
+            backgroundMusic = try AVAudioPlayer(contentsOf: url)
+            backgroundMusic.numberOfLoops = -1
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     @objc func restartGame() {
