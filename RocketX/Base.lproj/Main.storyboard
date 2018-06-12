@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="48D-36-dwh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="48D-36-dwh">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -261,20 +261,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="724"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="15" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pd9-Mu-s8Q">
-                                <rect key="frame" x="37" y="60" width="300" height="367.66666666666669"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pd9-Mu-s8Q">
+                                <rect key="frame" x="37" y="60" width="300" height="499"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="Cxh-tT-jtc"/>
                                 </constraints>
-                                <string key="text">🚀🚀🚀🚀🚀🚀🚀🚀Developed by 
+                                <mutableString key="text">🚀🚀🚀🚀🚀🚀🚀🚀Developed by 
 Marcus Groth (辜楷牧) 
 許少昀 (Willy Hsu) 
 曹峻寧 (Chun-Ning Tsao)
 
- for the 2018 Mobile Phone Programming course at NTU National Taiwan University (國立臺灣大學).
+ for the 2018 Mobile Phone Programming course at NTU National Taiwan University (國立臺灣大學)
  
-Rocket model by t4k1t.
-Asteroid texture by Spiral Graphics.</string>
+Rocket model by t4k1t
+Asteroid texture by 
+Spiral Graphics
+Menu music
+"I'm a machine" by Glass Lux
+Game music
+"Run" by Andrew Codeman
+</mutableString>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
