@@ -31,7 +31,6 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     // MARK: Properties
     
-    // object of other classes
     var objMotionControl = MotionControl()
     
     var isIphoneX: Bool = false
@@ -49,27 +48,28 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     var startAsteroidCreation: Bool = false
     var asteroidCreationTiming: Double = 0
-    // used for increasing the difficulty as the score arises
+    
+    // Used for increasing the difficulty as the score arises
     let asteroidCreationTimeSpace = [4.0, 3.0, 2.0, 1.0]
     
-    // used for skip the gameOver animate after flash animate
+    // Used for skip the gameOver animate after flash animate
     var isCollision: Bool = false
     
-    let horizontalBound: Float = 5 //was 7
-    let upperBound: Float = 7 //was 8
+    let horizontalBound: Float = 5
+    let upperBound: Float = 7
     let lowerBound: Float = -8
     let edgeWidth: Float = 3
     
-    // used for returning to game
+    // Used for returning to game
     var lastShipVelocity: SCNVector3!
     var lastShipAngularVelocity: SCNVector4!
-    //Input thresholds and ceilings (change values below, ceilings are chosen in degrees of rotation)
+    
+    // Input thresholds and ceilings (change values below, ceilings are chosen in degrees of rotation)
     var inputThresh: Float = 0
     var yPosCeil: Float = 0
     var yNegCeil: Float = 0
     var xPosCeil: Float = 0
     var xNegCeil: Float = 0
-    
     
     var gameState: GameState = GameState.paused
     
@@ -182,19 +182,19 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         let cameraDistance: Float = 10
         cameraNode.eulerAngles = SCNVector3(x: -.pi*cameraAngle/180, y: 0, z: 0)
         cameraNode.position = SCNVector3(x: 0, y: tan(.pi*cameraAngle/180)*cameraDistance + 1, z: cameraDistance)
-        //cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         gameScene.rootNode.addChildNode(cameraNode)
     }
     
     
     func initShip() {
-        //set the ship
+        // Set the ship
         let shipScene = SCNScene(named: "art.scnassets/retrorockett4k1t.dae")
         shipNode = shipScene?.rootNode.childNodes.first
         shipNode.position = SCNVector3(x: 0, y: 0, z: 0)
         shipNode.scale = SCNVector3(x: 0.5, y: 0.5, z: 0.5)
         shipNode.eulerAngles = SCNVector3(x: -(Float.pi/2), y: 0, z: 0)
-        // setting the physicsbody of the ship
+        
+        // Setting the physicsbody of the ship
         shipNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         shipNode.physicsBody?.damping = 0.4
         shipNode.physicsBody?.angularDamping = 0.9
@@ -203,8 +203,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         shipNode.name = "rocket"
         gameScene.rootNode.addChildNode(shipNode)
         
-        //for debugging below
-        print("init ship")
+        // print("init ship")
     }
     
     func initScore() {
@@ -219,36 +218,32 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     
     func initPauseView() {
         // the background rectangle
-        // pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
-        // pauseView.layer.cornerRadius = pauseView.frame.width/4.0
         pauseView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*2, height: gameView.bounds.height*2))
         pauseView.backgroundColor = UIColor.black
-        // If want to change the background color:
-        // pauseView.backgroundColor = UIColor(red: 0/255, green: 30/255, blue: 80/255, alpha: 0.8)
-        
         pauseView.clipsToBounds = true
-        // still not on the real center, don't know why
         pauseView.center = CGPoint(x: gameView.bounds.midX, y: gameView.bounds.midY)
         pauseView.alpha = 0
         gameView.addSubview(pauseView)
         
-        // add transparent gradient
-//        let gradient = CAGradientLayer()
-//        gradient.startPoint = CGPoint(x: 0, y: 0.0)
-//        gradient.endPoint = CGPoint(x: 0, y:0.17)
-//        let whiteColor = UIColor.white
-//        gradient.colors = [whiteColor.withAlphaComponent(0.0).cgColor, whiteColor.withAlphaComponent(1.0), whiteColor.withAlphaComponent(1.0).cgColor]
-//        gradient.locations = [NSNumber(value: 0.0), NSNumber(value: 0.5), NSNumber(value: 1.0)]
-//        gradient.frame = pauseView.bounds
-//        pauseView.layer.mask = gradient
+        // Add transparent gradient
+        /*
+        let gradient = CAGradientLayer()
+        gradient.startPoint = CGPoint(x: 0, y: 0.0)
+        gradient.endPoint = CGPoint(x: 0, y:0.17)
+        let whiteColor = UIColor.white
+        gradient.colors = [whiteColor.withAlphaComponent(0.0).cgColor, whiteColor.withAlphaComponent(1.0), whiteColor.withAlphaComponent(1.0).cgColor]
+        gradient.locations = [NSNumber(value: 0.0), NSNumber(value: 0.5), NSNumber(value: 1.0)]
+        gradient.frame = pauseView.bounds
+        pauseView.layer.mask = gradient
+        */
         
         let pauseLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 40))
         pauseLabel.center = CGPoint(x: pauseView.bounds.midX, y: pauseView.bounds.midY-100)
         pauseLabel.text = "PAUSED"
         pauseLabel.font = UIFont.boldSystemFont(ofSize: 26)
         pauseLabel.textAlignment = .center
-        // pauseLabel.textColor = UIColor.lightGray
-        // same as the title in the entry view
+        
+        // Same as the title in the entry view
         pauseLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         pauseView.addSubview(pauseLabel)
         
@@ -284,14 +279,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     func initGameOverView() {
-        // the background rectangle
-        // gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*0.8, height: gameView.bounds.height*0.7))
-        // gameOverView.layer.cornerRadius = gameOverView.frame.width/4.0
-        // overlay the whole gameView
+        // The background rectangle
         gameOverView = UIView(frame: CGRect(x: 0, y: 0, width: gameView.bounds.width*2, height: gameView.bounds.height*2))
         gameOverView.backgroundColor = UIColor.black
         gameOverView.clipsToBounds = true
-        // still not on the real center, don't know why
         gameOverView.center = CGPoint(x: gameView.bounds.midX, y: gameView.bounds.midY)
         gameOverView.alpha = 0
         gameView.addSubview(gameOverView)
@@ -301,8 +292,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameOverLabel.text = "GAME OVER"
         gameOverLabel.font = UIFont.boldSystemFont(ofSize: 26)
         gameOverLabel.textAlignment = .center
-        // gameOverLabel.textColor = UIColor.lightGray
-        // same as the title in the entry view
+        
+        // Same as the title in the entry view
         gameOverLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         gameOverView.addSubview(gameOverLabel)
         
@@ -311,8 +302,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         finalScoreLabel.text = "Score:"
         finalScoreLabel.font = UIFont.boldSystemFont(ofSize: 26)
         finalScoreLabel.textAlignment = .center
-        // finalScoreLabel.textColor = UIColor.lightGray
-        // same as the title in the entry view
+        
+        // Same as the title in the entry view
         finalScoreLabel.textColor = UIColor(red: 93/255, green: 188/255, blue: 210/255, alpha: 1)
         finalScoreLabel.restorationIdentifier = "finalScoreLabel"
         gameOverView.addSubview(finalScoreLabel)
@@ -385,7 +376,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     func flashAnimate() {
-        // simple animate after collision
+        // Simple animate after collision
         let circleRadius = gameView.bounds.width * 0.05 / 2.0
         let flashView = UIView(frame: CGRect(x: 0, y: 0, width: circleRadius * 2, height: circleRadius * 2))
         flashView.backgroundColor = UIColor.white
@@ -411,7 +402,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     func pauseGame() {
-        // prevent from keep calling thif func in touchesBegan()
+        // Prevent from keep calling this func in touchesBegan()
         gameState = GameState.blocked
         gameScene.rootNode.removeAllActions()
         for node in gameScene.rootNode.childNodes {
@@ -420,13 +411,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 node.physicsBody?.angularVelocity = SCNVector4(0, 0, 0, 0)
             }
         }
-        // stop the ship and asteroids
+        // Stop the ship and asteroids
         lastShipVelocity = shipNode.physicsBody?.velocity
         shipNode.physicsBody?.velocity = SCNVector3(0, 0, 0)
         lastShipAngularVelocity = shipNode.physicsBody?.angularVelocity
         shipNode.physicsBody?.angularVelocity = SCNVector4(0, 0, 0, 0)
         
-        // show the pause view
+        // Show the pause view
         UIView.animate(withDuration: 1.2, animations: {
             self.pauseView.alpha = 0.8
         }, completion: { (complete: Bool) in
@@ -436,13 +427,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     func gameOver() {
-        // prevent from keep calling thif func in render()
+        // Prevent from keep calling this func in render()
         gameState = GameState.blocked
         
-        // stop accumulate score
+        // Stop accumulate score
         gameScene.rootNode.removeAllActions()
         
-        // stop the ship and asteroids
+        // Stop the ship and asteroids
         for node in gameScene.rootNode.childNodes {
             if node.name == "rocket" || node.name == "asteroid" {
                 node.physicsBody?.velocity = SCNVector3(0, 0, 0)
@@ -460,7 +451,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         }
         UserDefaults.standard.set(scoreArray, forKey: "scoreArray")
         
-        // show the game over view
+        // Show the game over view
         DispatchQueue.main.async {
             for subView in self.gameOverView.subviews {
                 if subView.restorationIdentifier == "finalScoreLabel" {
@@ -483,13 +474,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     func createAsteroid() {
-        // create the SCNGeometry
+        // Create the SCNGeometry
         let asteroidGeometry = SCNCapsule(capRadius: 2.5, height: 6)
-        // create the SCNNode with SCNGeometry
+        // Create the SCNNode with SCNGeometry
         let asteroidNode = SCNNode(geometry: asteroidGeometry)
         asteroidNode.opacity = 0.0;
         
-        //setting the asteroid spawn position
+        // Setting the asteroid spawn position
         let asteroidSpawnRange = 10.0
         let randomAsteroidPositionX = Float((drand48()-0.5)*asteroidSpawnRange)
         let randomAsteroidPositionY = Float((drand48()-0.5)*asteroidSpawnRange)
@@ -497,14 +488,14 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         asteroidNode.geometry?.firstMaterial?.diffuse.contents  = UIImage(named: "asteroid")
         
-        // set the physicbody and put the asteroid into the rootNode
+        // Set the physicbody and put the asteroid into the rootNode
         asteroidNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         asteroidNode.physicsBody?.categoryBitMask = CollisionMask.asteroid.rawValue
         asteroidNode.physicsBody?.damping = 0
         asteroidNode.name = "asteroid"
         gameScene.rootNode.addChildNode(asteroidNode)
         
-        //apllying forces and torques
+        // Apllying forces and torques
         let asteroidInitialForce = SCNVector3(x: 0, y: 0, z: 10)
         asteroidNode.physicsBody?.applyForce(asteroidInitialForce, asImpulse: true)
         let randomAsteroidTorqueX = Float(drand48()-0.5)
@@ -520,13 +511,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     }
     
     
-    // remove the unseeable asteroid behind the camera
+    // Remove the unseeable asteroid behind the camera
     func cleanUpAsteroids() {
         for node in gameScene.rootNode.childNodes {
             if node.presentation.position.z > 10 && node.name == "asteroid"{
                 node.removeFromParentNode()
             }
-            //Reduce opacity of asteroids that have been dodged and are obstructing the view
+            // Reduce opacity of asteroids that have been dodged and are obstructing the view
             if node.presentation.position.z > 0 && node.name == "asteroid" {
                 SCNTransaction.begin()
                 SCNTransaction.animationDuration = 1
@@ -555,7 +546,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         var tempPitch = pitch
         var tempYaw = -yaw
 
-        //Apply the ceiling
+        // Apply the ceiling
         if tempPitch > xPosCeil { tempPitch = xPosCeil
         } else if tempPitch < xNegCeil { tempPitch = xNegCeil
         } else {
@@ -565,7 +556,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         } else {
         }
         
-        //Convert to range 0 to 1
+        // Convert to range 0 to 1
         let yOldRange:Float = ( yPosCeil - yNegCeil)
         let yNewRange:Float = (1 - -1)
         tempPitch = (((tempPitch - yNegCeil) * yNewRange) / yOldRange) + -1
@@ -574,7 +565,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         tempYaw = (((tempYaw - xNegCeil) * xNewRange) / xOldRange) + -1
         //print("Pitch, yaw is \(tempPitch) and \(tempYaw)")
         
-        //Apply threshold
+        // Apply threshold
         if abs(tempPitch) < inputThresh {
             tempPitch = 0
         }
@@ -588,9 +579,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // MARK: SCNSceneRendererDeligate functions
     
     func renderer(_ renderer: SCNSceneRenderer, willUpdate node: SCNNode, for anchor: ARAnchor) {
-        //Get input from face for rocket
+        // Get input from face for rocket
         faceNode = node
-        //gameView.scene?.rootNode.childNode(withName: "rocket", recursively: true)?.transform = node.transform
     }
     
     
@@ -600,7 +590,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             return
         }
         
-        //dead if ship is too far away
+        // Dead if ship is too far away
         if abs(shipNode.presentation.position.x) > horizontalBound || shipNode.presentation.position.y > upperBound || shipNode.presentation.position.y < lowerBound {
             gameState = .dead
         }
@@ -609,10 +599,10 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             gameOver()
         }
         
-        //cleaning up asteroids
+        // Cleaning up asteroids
         cleanUpAsteroids()
 
-        //creating asteroids
+        // Creating asteroids
         if time > asteroidCreationTiming && gameState == GameState.playing {
             if startAsteroidCreation == true {
                 createAsteroid()
@@ -624,14 +614,11 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             }
         }
         
-        
-        // following part are controls for the ship, need to able to switch between iphoneX and others
-        
-        //set control of the ship
+        // Set control of the ship
         var horizontalCentralForce: Float = 0
         var verticalCentralForce: Float = 0
         
-        //edge assist
+        // Edge assist
         if shipNode.presentation.position.x > (horizontalBound - edgeWidth) && (shipNode.physicsBody?.velocity.x)! > Float(0) {
             horizontalCentralForce = (shipNode.presentation.position.x - (horizontalBound - edgeWidth)) / edgeWidth * -6
         }
@@ -655,13 +642,13 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         var shipControlForce = SCNVector3(x: 0, y: 0, z: 0)
         
 //        print("the facenode is \(faceNode)")
-        // should see if the device is an iPhone X or not
+        // Control by face if the device is an iPhone X or control by device motion
         if isIphoneX == true {
-            //face control
+            // Face control
             if faceNode != nil {
                 let (yTemp, xTemp) = inputNormalizer(pitch: faceNode.eulerAngles.y, yaw: faceNode.eulerAngles.x)
                 shipControlForce = SCNVector3(
-                    //eulerAngles contains three elements: pitch, yaw and roll, in radians
+                    // EulerAngles contains three elements: pitch, yaw and roll, in radians
                     x: Float(yTemp*3), //+ horizontalCentralForce,
                     y: Float(xTemp*3), //+ verticalCentralForce,
                     z: 0)
@@ -669,9 +656,9 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
             }
         } else {
-            //read device motion (attitude)
+            // Read device motion (attitude)
             objMotionControl.updateDeviceMotionData()
-            //device motion control
+            // Device motion control
             shipControlForce = SCNVector3(
                 x: Float(objMotionControl.roll*6.0) + horizontalCentralForce,
                 y: Float(-((objMotionControl.pitch)-objMotionControl.devicePitchOffset)*10.0) + verticalCentralForce,
@@ -679,9 +666,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
 //            print(objMotionControl.devicePitchOffset)
         }
         
-        //Apply the force to the rocket itself
-//        shipNode.physicsBody?.applyForce(shipControlForce, asImpulse: false)
-       
+        // Apply the force to the rocket itself
         shipNode.physicsBody?.applyForce(shipControlForce, at: SCNVector3(x: 0, y: 0, z: -1.5), asImpulse: false)
         let shipBow = shipNode.presentation.convertVector(SCNVector3(x: 0, y: 5, z: 0), to: nil)
         let shipStern = shipNode.presentation.convertVector(SCNVector3(x: 0, y: -5, z: 0), to: nil)

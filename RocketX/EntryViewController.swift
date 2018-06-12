@@ -70,7 +70,7 @@ class EntryViewController: UIViewController {
         
         super.prepare(for: segue, sender: sender)
         
-        // prepare scores to ScoreTableView
+        // Prepare scores for ScoreTableView
         if segue.identifier == "scoreTableSegue" {
             let destinationViewController = segue.destination as! ScoreTableViewController
             let scoreArray = UserDefaults.standard.object(forKey: "scoreArray") as? [Int] ?? [Int]()

@@ -18,18 +18,18 @@ public class MotionControl {
     var pitch: Double = 0
     var yaw: Double = 0
     
-    // initialization
+    // Initialization
     init() {
         print("init MotionControl")
         motionManager = CMMotionManager()
     }
     
-    //calibrate devicemotion
+    // Calibrate devicemotion
     func setDevicePitchOffset() {
         while true {
-            //update attitude from motionManager
+            // Update attitude from motionManager
             motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical)
-            // set the offset to current pitch
+            // Set the offset to current pitch
             guard motionManager.deviceMotion?.attitude.pitch != nil else {continue}
             devicePitchOffset = motionManager.deviceMotion!.attitude.pitch
             print(devicePitchOffset)
@@ -37,7 +37,7 @@ public class MotionControl {
         }
     }
     
-    // update device motion value
+    // Update device motion value
     func updateDeviceMotionData() {
         motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical)
         guard motionManager.deviceMotion?.attitude != nil else {return}
