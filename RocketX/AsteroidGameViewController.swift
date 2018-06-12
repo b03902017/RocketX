@@ -527,9 +527,9 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 node.removeFromParentNode()
             }
             //Reduce opacity of asteroids that have been dodged and are obstructing the view
-            if node.presentation.position.z > -5 && node.name == "asteroid" {
+            if node.presentation.position.z > 0 && node.name == "asteroid" {
                 SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
+                SCNTransaction.animationDuration = 1
                 node.opacity = 0.0
                 SCNTransaction.commit()
             }
@@ -609,13 +609,15 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
             gameOver()
         }
         
-        //creating asteroids and cleaning up asteroids
+        //cleaning up asteroids
+        cleanUpAsteroids()
+
+        //creating asteroids
         if time > asteroidCreationTiming && gameState == GameState.playing {
             if startAsteroidCreation == true {
                 createAsteroid()
                 let timeSpaceIndex = score < 80 ? score/20 : 3
                 asteroidCreationTiming = time + asteroidCreationTimeSpace[timeSpaceIndex]
-                cleanUpAsteroids()
             } else {
                 asteroidCreationTiming = time + 3
                 startAsteroidCreation = true
