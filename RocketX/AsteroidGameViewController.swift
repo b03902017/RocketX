@@ -55,8 +55,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
     // used for skip the gameOver animate after flash animate
     var isCollision: Bool = false
     
-    let horizontalBound: Float = 6 //was 7
-    let upperBound: Float = 8 //was 8
+    let horizontalBound: Float = 5 //was 7
+    let upperBound: Float = 7 //was 8
     let lowerBound: Float = -8
     let edgeWidth: Float = 3
     
@@ -110,6 +110,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         
         objMotionControl.setDevicePitchOffset()
         accumulateScore()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -169,7 +170,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         gameView.scene = gameScene
         gameView.scene?.physicsWorld.gravity = SCNVector3(x: 0, y: 0, z: 0)
         gameView.scene?.physicsWorld.speed = 1
-        gameScene.background.contents = UIColor.black //UIImage(named: "background.jpg")
+        gameScene.background.contents = UIImage(named: "background.jpg")
         gameScene.physicsWorld.contactDelegate = self
         
     }
@@ -486,6 +487,7 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         let asteroidGeometry = SCNCapsule(capRadius: 2.5, height: 6)
         // create the SCNNode with SCNGeometry
         let asteroidNode = SCNNode(geometry: asteroidGeometry)
+        asteroidNode.opacity = 0.0;
         
         //setting the asteroid spawn position
         let asteroidSpawnRange = 10.0
@@ -509,14 +511,27 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         let randomAsteroidTorqueY = Float(drand48()-0.5)
         let randomAsteroidTorqueZ = Float(drand48()-0.5)
         asteroidNode.physicsBody?.applyTorque(SCNVector4(x: randomAsteroidTorqueX, y: randomAsteroidTorqueY, z: randomAsteroidTorqueZ, w: 5), asImpulse: true)
+
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = 1.5
+        asteroidNode.opacity = 1.0
+        SCNTransaction.commit()
+
     }
     
     
     // remove the unseeable asteroid behind the camera
     func cleanUpAsteroids() {
         for node in gameScene.rootNode.childNodes {
-            if node.presentation.position.z > 50 {
+            if node.presentation.position.z > 10 && node.name == "asteroid"{
                 node.removeFromParentNode()
+            }
+            //Reduce opacity of asteroids that have been dodged and are obstructing the view
+            if node.presentation.position.z > -5 && node.name == "asteroid" {
+                SCNTransaction.begin()
+                SCNTransaction.animationDuration = 0.5
+                node.opacity = 0.0
+                SCNTransaction.commit()
             }
         }
     }
@@ -645,8 +660,8 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
                 let (yTemp, xTemp) = inputNormalizer(pitch: faceNode.eulerAngles.y, yaw: faceNode.eulerAngles.x)
                 shipControlForce = SCNVector3(
                     //eulerAngles contains three elements: pitch, yaw and roll, in radians
-                    x: Float(yTemp*3) + horizontalCentralForce,
-                    y: Float(xTemp*3) + verticalCentralForce,
+                    x: Float(yTemp*3), //+ horizontalCentralForce,
+                    y: Float(xTemp*3), //+ verticalCentralForce,
                     z: 0)
             } else {
                 shipControlForce = SCNVector3(x: Float(0), y:Float(0), z: Float(0))
