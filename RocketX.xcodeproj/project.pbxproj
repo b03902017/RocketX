@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4AA10ACA20C27FED00E1EE77 /* ModelIdentifiying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA10AC920C27FED00E1EE77 /* ModelIdentifiying.swift */; };
+		4ACDE47C20D0B35E0083134A /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 4ACDE47A20D0B35D0083134A /* spark.png */; };
+		4ACDE47D20D0B35E0083134A /* Jet.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 4ACDE47B20D0B35D0083134A /* Jet.scnp */; };
 		4AF7259920AC91A000F62E5C /* AsteroidGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */; };
 		870FDB3B20C2C670006665BA /* MotionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD3492520C23ACD00CB88CE /* MotionControl.swift */; };
 		872E0D3720C18E1C00C2162D /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872E0D3620C18E1C00C2162D /* EntryViewController.swift */; };
@@ -22,6 +24,8 @@
 
 /* Begin PBXFileReference section */
 		4AA10AC920C27FED00E1EE77 /* ModelIdentifiying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelIdentifiying.swift; sourceTree = "<group>"; };
+		4ACDE47A20D0B35D0083134A /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		4ACDE47B20D0B35D0083134A /* Jet.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Jet.scnp; sourceTree = "<group>"; };
 		4AD3492520C23ACD00CB88CE /* MotionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionControl.swift; sourceTree = "<group>"; };
 		4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsteroidGameViewController.swift; sourceTree = "<group>"; };
 		872E0D3620C18E1C00C2162D /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +52,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4ACDE47920D0B3150083134A /* Particle */ = {
+			isa = PBXGroup;
+			children = (
+				4ACDE47A20D0B35D0083134A /* spark.png */,
+				4ACDE47B20D0B35D0083134A /* Jet.scnp */,
+			);
+			path = Particle;
+			sourceTree = "<group>";
+		};
 		87B22D4B20CFEA53004A4F7D /* music */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +89,7 @@
 		87DA42FE20ABD27B00E6C438 /* RocketX */ = {
 			isa = PBXGroup;
 			children = (
+				4ACDE47920D0B3150083134A /* Particle */,
 				87DA42FF20ABD27B00E6C438 /* AppDelegate.swift */,
 				4AD3492520C23ACD00CB88CE /* MotionControl.swift */,
 				4AA10AC920C27FED00E1EE77 /* ModelIdentifiying.swift */,
@@ -151,7 +165,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				87DA430220ABD27B00E6C438 /* art.scnassets in Resources */,
+				4ACDE47C20D0B35E0083134A /* spark.png in Resources */,
 				87B22D5320CFF139004A4F7D /* game.mp3 in Resources */,
+				4ACDE47D20D0B35E0083134A /* Jet.scnp in Resources */,
 				87B22D5120CFF130004A4F7D /* entry.mp3 in Resources */,
 				87DA430C20ABD27D00E6C438 /* LaunchScreen.storyboard in Resources */,
 				87DA430720ABD27B00E6C438 /* Main.storyboard in Resources */,
@@ -315,13 +331,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XHW3T8L5P6;
+				DEVELOPMENT_TEAM = Q7K7WAPADP;
 				INFOPLIST_FILE = RocketX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP.RocketX2018a;
+				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP.RocketX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -333,13 +349,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XHW3T8L5P6;
+				DEVELOPMENT_TEAM = Q7K7WAPADP;
 				INFOPLIST_FILE = RocketX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP.RocketX2018a;
+				PRODUCT_BUNDLE_IDENTIFIER = NTUMPP.RocketX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
