@@ -193,6 +193,15 @@ class AsteroidGameViewController: UIViewController, SCNSceneRendererDelegate, SC
         shipNode.physicsBody?.categoryBitMask = CollisionMask.ship.rawValue
         shipNode.physicsBody?.contactTestBitMask = CollisionMask.asteroid.rawValue
         shipNode.name = "rocket"
+        
+        let jet = SCNParticleSystem(named: "Jet", inDirectory: nil)
+        let jetNode = SCNNode()
+        jetNode.position = SCNVector3(x: 0, y: -4, z: 0)
+        jetNode.addParticleSystem(jet!)
+        shipNode.addChildNode(jetNode)
+
+//        shipNode.addParticleSystem(jet!)
+        
         gameScene.rootNode.addChildNode(shipNode)
         
         // print("init ship")
