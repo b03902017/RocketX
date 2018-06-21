@@ -1,7 +1,6 @@
-## RocketX
+# RocketX
 ### Introduction
-RocketX is a new iOS game for iPhoneX written in Swift.
-In this game, users will steer a rocket by tilting and rorating their heads just like they are standing in the cockpit. We hope this game can help users exerercise their necks and alleviate the neck and back problems caused by bad postures while people using computers or mobile devices. In other words, we try to explore how advanced sensors can change the interaction between people and devices.
+RocketX is a new iOS game for iPhoneX written in Swift. In this game, users will steer a rocket by tilting and rotating their heads just like they are standing in the cockpit. We hope this game can help users exerercise their necks and alleviate the neck and back problems caused by bad postures while people using computers or mobile devices. In other words, we try to explore how advanced sensors can change the interaction between people and mobile devices.
 
 More information can be found in the game menu.
 

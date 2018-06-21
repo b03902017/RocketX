@@ -74,6 +74,7 @@
 		87DA42F320ABD27B00E6C438 = {
 			isa = PBXGroup;
 			children = (
+				8741A1A620DBFB1400ECC339 /* README.md */,
 				87DA42FE20ABD27B00E6C438 /* RocketX */,
 				87DA42FD20ABD27B00E6C438 /* Products */,
 			);
@@ -100,7 +101,6 @@
 				87DA430520ABD27B00E6C438 /* Main.storyboard */,
 				87DA430A20ABD27D00E6C438 /* LaunchScreen.storyboard */,
 				87DA430D20ABD27D00E6C438 /* Info.plist */,
-				8741A1A620DBFB1400ECC339 /* README.md */,
 				87B22D4B20CFEA53004A4F7D /* music */,
 				87B22D4F20CFEB23004A4F7D /* Assets.xcassets */,
 				87DA430120ABD27B00E6C438 /* art.scnassets */,
