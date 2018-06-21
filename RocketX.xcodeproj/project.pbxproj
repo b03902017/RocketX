@@ -30,6 +30,7 @@
 		4AF7259820AC91A000F62E5C /* AsteroidGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsteroidGameViewController.swift; sourceTree = "<group>"; };
 		872E0D3620C18E1C00C2162D /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		872E0D3A20C1C7DD00C2162D /* ScoreTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTableViewController.swift; sourceTree = "<group>"; };
+		8741A1A620DBFB1400ECC339 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		87B22D4F20CFEB23004A4F7D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		87B22D5020CFF130004A4F7D /* entry.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = entry.mp3; sourceTree = "<group>"; };
 		87B22D5220CFF139004A4F7D /* game.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game.mp3; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 				87DA430520ABD27B00E6C438 /* Main.storyboard */,
 				87DA430A20ABD27D00E6C438 /* LaunchScreen.storyboard */,
 				87DA430D20ABD27D00E6C438 /* Info.plist */,
+				8741A1A620DBFB1400ECC339 /* README.md */,
 				87B22D4B20CFEA53004A4F7D /* music */,
 				87B22D4F20CFEB23004A4F7D /* Assets.xcassets */,
 				87DA430120ABD27B00E6C438 /* art.scnassets */,
